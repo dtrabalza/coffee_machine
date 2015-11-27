@@ -13,7 +13,7 @@ public class CoffeeMachineTest {
         new CoffeeMachine(null);
     }
 
-    //@Test
+    @Test
     public void coffeeMachineCanLoadOneIngredient() {
         List<Ingredient> ingredients = new ArrayList<>();
         ingredients.add(new Ingredient("Water", 20));
