@@ -5,6 +5,9 @@ apply plugin: 'application'
 
 mainClassName = 'com.coffee.Main'
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 version = '1.0.0-SNAPSHOT'
 group = "com.coffee"
 
