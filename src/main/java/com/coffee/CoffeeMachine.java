@@ -32,9 +32,11 @@ public class CoffeeMachine {
     }
 
     private void bulkAddIngredients(List<Ingredient> ingredients) {
+        logger.info("Bulk load ingredients...");
         ingredients.stream().forEach((ingredient) -> {
             addIngredient(ingredient);
         });
+        logger.info("Bulk load ingredients done");
     }
 
     public void addIngredient(Ingredient ingredient) throws IllegalArgumentException {
@@ -42,6 +44,7 @@ public class CoffeeMachine {
             throw new IllegalArgumentException("You are trying to load twice the ingredient: "
                     + ingredient.getName());
         } else {
+            logger.info("Adding ingredient {}", ingredient);
             this.ingredientMap.put(ingredient.getName(), ingredient);
         }
     }

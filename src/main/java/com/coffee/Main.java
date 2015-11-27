@@ -5,13 +5,13 @@ import org.slf4j.LoggerFactory;
 
 public class Main {
 
-	private static Logger logger = LoggerFactory.getLogger(Main.class);
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
-	public static void main(String[] args) {
-		logger.info("Coffee machine started");
-		System.out.println("Super cool coffee machine ready to use!");
+    public static void main(String[] args) {
+        logger.info("Coffee machine started");
+        System.out.println("Super cool coffee machine ready to use!");
 
-		logger.info("Coffee machine ready");
-	}
+        logger.info("Coffee machine ready");
+    }
 
 }

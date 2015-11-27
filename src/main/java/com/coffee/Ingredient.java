@@ -1,6 +1,10 @@
 package com.coffee;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public final class Ingredient {
+    private static final Logger logger = LoggerFactory.getLogger(Ingredient.class);
 
     private String name;
 
