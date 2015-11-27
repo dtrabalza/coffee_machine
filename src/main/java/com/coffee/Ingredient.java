@@ -49,4 +49,9 @@ public final class Ingredient {
         this.quantity = quantity;
     }
 
+    @Override
+    public String toString() {
+        return "Ingredient: " + this.name + ", Quantity: " + quantity;
+    }
+
 }
