@@ -60,6 +60,12 @@ public class CoffeeMachineTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void coffeeMachineCannotLoadANullIngredient() {
+        CoffeeMachine coffeeMachine = new CoffeeMachine();
+        coffeeMachine.addIngredient(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void coffeeMachineCannotLoadTwiceTheSameIngredient2() {
         List<Ingredient> ingredients = new ArrayList<>();
         ingredients.add(new Ingredient("Water", 20));
@@ -80,6 +86,28 @@ public class CoffeeMachineTest {
         assertTrue(machine.getIngredients().contains(new Ingredient("Coffee", 20)));
         assertTrue(machine.getIngredients().contains(new Ingredient("Milk", 10)));
         assertTrue(machine.getIngredients().contains(new Ingredient("Chocolate", 5)));
+    }
+
+    @Test
+    public void coffeeMachineCanAddDrinks() {
+        Ingredient water = new Ingredient("Water", 1);
+        Ingredient coffee = new Ingredient("Coffee", 1);
+
+        Drink espresso = new Drink("Espresso");
+        espresso.addIngredient(water);
+        espresso.addIngredient(coffee);
+
+        CoffeeMachine coffeeMachine = new CoffeeMachine();
+        coffeeMachine.addDrink(espresso);
+
+        assertTrue(coffeeMachine.getDrinks().contains(espresso));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void coffeeMachineCannotAddNullDrinks() {
+        CoffeeMachine coffeeMachine = new CoffeeMachine();
+        coffeeMachine.addDrink(null);
+
     }
 
 }
