@@ -76,9 +76,17 @@ public class InputHandler {
                 logger.debug("User enter command \"{}\"", HELP_COMMAND);
                 printUsage();
             } else if (line.startsWith(PREPARE_COMMAND)) {
-                String drink = line.substring(line.indexOf(PREPARE_COMMAND) + PREPARE_COMMAND.length()).trim();
-                if (coffeeMachine.getDrinksNameList().contains(drink)) {
-                    print("Preparing: " + drink);
+                String drinkName = line.substring(line.indexOf(PREPARE_COMMAND) + PREPARE_COMMAND.length()).trim();
+                if (coffeeMachine.getDrinksNameList().contains(drinkName)) {
+                    Drink drink = coffeeMachine.getDrinkByName(drinkName);
+                    try {
+                        coffeeMachine.prepareDrink(drink);
+                        print("Your drink is ready! Enjoy your " + drink);
+                        printCoffeeMachineIngredients();
+                    }catch(IllegalStateException e){
+                        print("Cannot prepare your drink (probably there are not enough ingredients!). "
+                                + "Please ask the coffee machine guy or whichever italian you can find");
+                    }
                 } else {
                     print("Sorry, drink not present. Try listing the drinks using the command \"" + LIST_COMMAND + "\"");
                 }

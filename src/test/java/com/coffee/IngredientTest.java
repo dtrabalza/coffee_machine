@@ -59,4 +59,20 @@ public class IngredientTest {
         new Ingredient("\"", 10);
     }
 
+    @Test
+    public void decreaseQuantityDecreasesIngredientsQuantity() {
+        Ingredient water = new Ingredient("Water", 10);
+
+        water.reduceQuantity(2);
+
+        assertTrue(8 == water.getQuantity());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void decreaseQuantityDoesNotRemoveMoreThanTheTotalIngredient() {
+        Ingredient water = new Ingredient("Water", 2);
+
+        water.reduceQuantity(10);
+    }
+
 }

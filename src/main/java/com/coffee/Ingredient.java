@@ -52,7 +52,7 @@ public final class Ingredient {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 43 * hash + Objects.hashCode(this.name);
+        hash = 47 * hash + Objects.hashCode(this.name);
         return hash;
     }
 
@@ -65,10 +65,14 @@ public final class Ingredient {
             return false;
         }
         final Ingredient other = (Ingredient) obj;
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
+        return Objects.equals(this.name, other.name);
+    }
+
+    void reduceQuantity(int value) {
+        if (value > quantity) {
+            throw new IllegalStateException("Cannot reduce " + value + "from the quantity of the ingredient: " + this);
         }
-        return true;
+        quantity = quantity - value;
     }
 
 }

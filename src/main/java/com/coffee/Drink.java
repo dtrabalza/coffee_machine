@@ -2,17 +2,20 @@ package com.coffee;
 
 import com.coffee.utils.Validator;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public final class Drink {
 
     private String name;
 
-    private List<Ingredient> ingredients;
+    private Set<Ingredient> ingredients;
 
     public Drink() {
-        ingredients = new ArrayList<>();
+        ingredients = new HashSet<>();
     }
 
     public Drink(String name) {
@@ -29,7 +32,7 @@ public final class Drink {
         this.name = name;
     }
 
-    public List<Ingredient> getIngredients() {
+    public Collection<Ingredient> getIngredients() {
         return ingredients;
     }
 

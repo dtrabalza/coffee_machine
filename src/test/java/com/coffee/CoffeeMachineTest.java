@@ -107,7 +107,6 @@ public class CoffeeMachineTest {
     public void coffeeMachineCannotAddNullDrinks() {
         CoffeeMachine coffeeMachine = new CoffeeMachine();
         coffeeMachine.addDrink(null);
-
     }
 
     @Test
@@ -180,10 +179,45 @@ public class CoffeeMachineTest {
 
         ArrayList<String> list = new ArrayList<String>() {
             {
-                add("espresso");
-                add("coffee");
+                add("Espresso");
+                add("Coffee");
             }
         };
         assertEquals(list, machine.getDrinksNameList());
+    }
+
+    @Test
+    public void getDrinksByNameWorks() {
+        CoffeeMachine machine = new CoffeeMachine();
+
+        machine.addDrink(new Drink("Espresso")
+                .addIngredient(new Ingredient("Water", 1))
+                .addIngredient(new Ingredient("Coffee", 1)));
+        machine.addDrink(new Drink("Coffee")
+                .addIngredient(new Ingredient("Water", 2))
+                .addIngredient(new Ingredient("Coffee", 1)));
+
+        Drink espresso = new Drink("Espresso")
+                .addIngredient(new Ingredient("Water", 1))
+                .addIngredient(new Ingredient("Coffee", 1));
+
+        assertEquals(espresso, machine.getDrinkByName("Espresso"));
+    }
+
+    @Test
+    public void consumeIngredientReducesTheTotalIngredients() {
+        CoffeeMachine coffeeMachine = new CoffeeMachine();
+
+        coffeeMachine.addIngredient(new Ingredient("Water", 20));
+        coffeeMachine.addIngredient(new Ingredient("Coffee", 20));
+
+        Drink espresso = new Drink("Espresso")
+                .addIngredient(new Ingredient("Water", 1))
+                .addIngredient(new Ingredient("Coffee", 1));
+
+        coffeeMachine.prepareDrink(espresso);
+
+        assertTrue(coffeeMachine.getIngredientsMap().get("Water").getQuantity() == 19);
+        assertTrue(coffeeMachine.getIngredientsMap().get("Coffee").getQuantity() == 19);
     }
 }

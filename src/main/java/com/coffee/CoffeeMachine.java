@@ -35,6 +35,10 @@ public class CoffeeMachine {
         return this.ingredientMap.values();
     }
 
+    public Map<String, Ingredient> getIngredientsMap() {
+        return ingredientMap;
+    }
+
     public Collection<Drink> getDrinks() {
         return this.drinksMap.values();
     }
@@ -107,10 +111,24 @@ public class CoffeeMachine {
 
     public List<String> getDrinksNameList() {
         List<String> drinkNames = new ArrayList<>();
-        for (Drink drink : drinksMap.values()) {
-            drinkNames.add(drink.getName().toLowerCase());
-        }
+        drinksMap.values().stream().forEach((drink) -> {
+            drinkNames.add(drink.getName());
+        });
         return drinkNames;
     }
 
+    public Drink getDrinkByName(String drinkName) {
+        return drinksMap.get(drinkName);
+    }
+
+    void prepareDrink(Drink drink) {
+        logger.info("CoffeeMachine preparing: " + drink.getName());
+        drink.getIngredients().stream().forEach((ingredient) -> {
+            consumeIngredient(ingredient);
+        });
+    }
+
+    private void consumeIngredient(Ingredient ingredient) {
+        ingredientMap.get(ingredient.getName()).reduceQuantity(ingredient.getQuantity());
+    }
 }
