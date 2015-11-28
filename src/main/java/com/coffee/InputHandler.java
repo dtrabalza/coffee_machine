@@ -110,6 +110,8 @@ public class InputHandler {
         for (Command command : Command.values()) {
             console.println(command.getName() + "     " + command.getDescription());
         }
+        console.println();
+        console.println("HINT: Use TAB for autocomplete");
         console.println("*************** HELP ***************");
         console.println();
     }
