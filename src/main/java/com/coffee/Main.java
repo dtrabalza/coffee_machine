@@ -16,7 +16,7 @@ public class Main {
 
         CoffeeMachine coffeeMachine = new CoffeeMachine();
         inputHandler.print("Loading coffee machine...");
-        coffeeMachine.loadIngredientsFromMemory();
+        coffeeMachine.init();
         inputHandler.print("Coffee machine loaded and ready!");
         
         inputHandler.setCoffeeMachine(coffeeMachine);

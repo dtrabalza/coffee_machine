@@ -1,7 +1,6 @@
 package com.coffee;
 
 import java.io.IOException;
-import java.util.logging.Level;
 import jline.TerminalFactory;
 import jline.console.ConsoleReader;
 import org.slf4j.Logger;
@@ -85,9 +84,11 @@ public class InputHandler {
         console.println();
         printCoffeeMachineIngredients();
         console.println("*************** HELP ***************");
+        console.println("CTRL+D" + "   " + "Quit");
         for (Command command : Command.values()) {
             console.println(command.getName() + "     " + command.getDescription());
         }
+        console.println("*************** HELP ***************");
         console.println();
     }
     

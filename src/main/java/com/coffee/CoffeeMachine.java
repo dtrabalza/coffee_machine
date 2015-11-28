@@ -55,11 +55,11 @@ public class CoffeeMachine {
             throw new IllegalArgumentException("You are trying to add twice the ingredient: "
                     + ingredient.getName());
         }
-        logger.info("Adding ingredient {}", ingredient);
+        logger.info("Adding {}", ingredient);
         this.ingredientMap.put(ingredient.getName(), ingredient);
     }
 
-    public void loadIngredientsFromMemory() {
+    protected void loadIngredientsFromMemory() {
         logger.info("Loading ingredients...");
         addIngredient(new Ingredient("Water", 20));
         addIngredient(new Ingredient("Coffee", 20));
@@ -77,7 +77,31 @@ public class CoffeeMachine {
             throw new IllegalArgumentException("You are trying to add twice the drink: "
                     + drink.getName());
         }
-        logger.info("Adding drink: {}", drink);
+        logger.info("Adding {}", drink);
         drinksMap.put(drink.getName(), drink);
     }
+
+    protected void loadDrinksFromMemory() {
+        logger.info("Loading drinks...");
+        addDrink(new Drink("Espresso")
+                .addIngredient(new Ingredient("Water", 1))
+                .addIngredient(new Ingredient("Coffee", 1)));
+        addDrink(new Drink("Coffee")
+                .addIngredient(new Ingredient("Water", 2))
+                .addIngredient(new Ingredient("Coffee", 1)));
+        addDrink(new Drink("Cappuccino")
+                .addIngredient(new Ingredient("Water", 1))
+                .addIngredient(new Ingredient("Coffee", 1))
+                .addIngredient(new Ingredient("Milk", 1)));
+        addDrink(new Drink("Chocolate")
+                .addIngredient(new Ingredient("Milk", 2))
+                .addIngredient(new Ingredient("Chocolate", 1)));
+        logger.info("Drinks loaded");
+    }
+
+    void init() {
+        loadIngredientsFromMemory();
+        loadDrinksFromMemory();
+    }
+
 }

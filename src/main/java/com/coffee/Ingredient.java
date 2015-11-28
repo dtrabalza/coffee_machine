@@ -46,7 +46,7 @@ public final class Ingredient {
 
     @Override
     public String toString() {
-        return "Ingredient: " + this.name + ", Quantity: " + quantity;
+        return "Ingredient: " + this.name + " [" + quantity + "]";
     }
 
     @Override
