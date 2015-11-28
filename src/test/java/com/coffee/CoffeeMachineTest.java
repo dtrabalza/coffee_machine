@@ -220,4 +220,31 @@ public class CoffeeMachineTest {
         assertTrue(coffeeMachine.getIngredientsMap().get("Water").getQuantity() == 19);
         assertTrue(coffeeMachine.getIngredientsMap().get("Coffee").getQuantity() == 19);
     }
+
+    @Test
+    public void bulkLoadDrinksWorks() {
+        CoffeeMachine coffeeMachine = new CoffeeMachine();
+
+        List<Drink> drinks = new ArrayList<>();
+        drinks.add(new Drink("Espresso")
+                .addIngredient(new Ingredient("Water", 1))
+                .addIngredient(new Ingredient("Coffee", 1)));
+        drinks.add(new Drink("Coffee")
+                .addIngredient(new Ingredient("Water", 2))
+                .addIngredient(new Ingredient("Coffee", 1)));
+        drinks.add(new Drink("Cappuccino")
+                .addIngredient(new Ingredient("Water", 1))
+                .addIngredient(new Ingredient("Coffee", 1))
+                .addIngredient(new Ingredient("Milk", 1)));
+        drinks.add(new Drink("Chocolate")
+                .addIngredient(new Ingredient("Milk", 2))
+                .addIngredient(new Ingredient("Chocolate", 1)));
+
+        coffeeMachine.loadDrinks(drinks);
+
+        assertNotNull(coffeeMachine.getDrinks());
+        assertTrue(drinks.size() == coffeeMachine.getDrinks().size());
+        assertTrue(coffeeMachine.getDrinks().containsAll(drinks));
+    }
+
 }

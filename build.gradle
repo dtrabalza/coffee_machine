@@ -12,13 +12,18 @@ version = '1.0.0-SNAPSHOT'
 group = "com.coffee"
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
+
+task copyTestResources(type: Copy) {
+    from "${projectDir}/src/test/resources"
+    into "${buildDir}/classes/test"
+}
+processTestResources.dependsOn copyTestResources
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.13'
     compile 'org.slf4j:slf4j-simple:1.7.13'
-    compile 'org.json:json:20151123'
     compile 'jline:jline:2.13'
     testCompile 'junit:junit:4.12'
 }

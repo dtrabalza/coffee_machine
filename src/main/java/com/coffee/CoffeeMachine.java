@@ -104,7 +104,7 @@ public class CoffeeMachine {
         logger.info("Drinks loaded");
     }
 
-    void init() {
+    public void init() {
         loadIngredientsFromMemory();
         loadDrinksFromMemory();
     }
@@ -130,5 +130,11 @@ public class CoffeeMachine {
 
     private void consumeIngredient(Ingredient ingredient) {
         ingredientMap.get(ingredient.getName()).reduceQuantity(ingredient.getQuantity());
+    }
+
+    void loadDrinks(List<Drink> drinks) {
+        drinks.stream().forEach((drink) -> {
+            addDrink(drink);
+        });
     }
 }
