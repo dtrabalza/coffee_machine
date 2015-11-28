@@ -68,11 +68,11 @@ public class InputHandler {
 
         String line = null;
         while ((line = console.readLine()) != null) {
-            if (line.equalsIgnoreCase(LIST_COMMAND)) {
+            if (line.trim().equalsIgnoreCase(LIST_COMMAND)) {
                 logger.debug("User enter command \"{}\"", LIST_COMMAND);
                 print("Available drinks are:");
                 print(coffeeMachine.getDrinks());
-            } else if (line.equalsIgnoreCase(HELP_COMMAND)) {
+            } else if (line.trim().equalsIgnoreCase(HELP_COMMAND)) {
                 logger.debug("User enter command \"{}\"", HELP_COMMAND);
                 printUsage();
             } else if (line.startsWith(PREPARE_COMMAND)) {
@@ -148,7 +148,9 @@ public class InputHandler {
         List<Completer> completors = new LinkedList<>();
 
         completors.add(new AggregateCompleter(
-                new ArgumentCompleter(new StringsCompleter(PREPARE_COMMAND), new StringsCompleter(coffeeMachine.getDrinksNameList()), new NullCompleter())
+                new ArgumentCompleter(new StringsCompleter(PREPARE_COMMAND), new StringsCompleter(coffeeMachine.getDrinksNameList()), new NullCompleter()),
+                new ArgumentCompleter(new StringsCompleter(LIST_COMMAND), new NullCompleter()),
+                new ArgumentCompleter(new StringsCompleter(HELP_COMMAND), new NullCompleter())
         )
         );
 
