@@ -1,5 +1,6 @@
 package com.coffee;
 
+import com.coffee.utils.Validator;
 import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,6 @@ public final class Ingredient {
     private int quantity;
 
     private final static int MAX_QUANTITY = 100;
-    private final static int MAX_NAME_LENGTH = 30;
 
     public Ingredient() {
 
@@ -29,20 +29,8 @@ public final class Ingredient {
     }
 
     public void setName(String name) {
-        validateName(name);
+        Validator.validateString(name);
         this.name = name;
-    }
-
-    private void validateName(String name) throws IllegalArgumentException {
-        if (null == name || "".equals(name)) {
-            throw new IllegalArgumentException("Invalid ingredient name (name null or empty)");
-        }
-        if (MAX_NAME_LENGTH < name.length()) {
-            throw new IllegalArgumentException("Invalid ingredient name (name too long)");
-        }
-        if (!name.matches("[a-zA-Z]+")) {
-            throw new IllegalArgumentException("Invalid ingredient name (name not valid)");
-        }
     }
 
     public int getQuantity() {
@@ -63,9 +51,8 @@ public final class Ingredient {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 29 * hash + Objects.hashCode(this.name);
-        hash = 29 * hash + this.quantity;
+        int hash = 7;
+        hash = 43 * hash + Objects.hashCode(this.name);
         return hash;
     }
 
@@ -81,7 +68,7 @@ public final class Ingredient {
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        return this.quantity == other.quantity;
+        return true;
     }
 
 }
