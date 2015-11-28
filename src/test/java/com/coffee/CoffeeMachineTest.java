@@ -69,4 +69,17 @@ public class CoffeeMachineTest {
         machine.addIngredient(new Ingredient("Water", 1));
     }
 
+    @Test
+    public void coffeeMachineLoadsIngredientsFromMemory() {
+        CoffeeMachine machine = new CoffeeMachine();
+        machine.loadIngredientsFromMemory();
+
+        assertNotNull(machine.getIngredients());
+        assertTrue(machine.getIngredients().size() == 4);
+        assertTrue(machine.getIngredients().contains(new Ingredient("Water", 20)));
+        assertTrue(machine.getIngredients().contains(new Ingredient("Coffee", 20)));
+        assertTrue(machine.getIngredients().contains(new Ingredient("Milk", 10)));
+        assertTrue(machine.getIngredients().contains(new Ingredient("Chocolate", 5)));
+    }
+
 }

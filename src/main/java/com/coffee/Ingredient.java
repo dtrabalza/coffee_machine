@@ -1,9 +1,11 @@
 package com.coffee;
 
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public final class Ingredient {
+
     private static final Logger logger = LoggerFactory.getLogger(Ingredient.class);
 
     private String name;
@@ -38,8 +40,9 @@ public final class Ingredient {
         if (MAX_NAME_LENGTH < name.length()) {
             throw new IllegalArgumentException("Invalid ingredient name (name too long)");
         }
-        if (!name.matches("[a-zA-Z]+"))
+        if (!name.matches("[a-zA-Z]+")) {
             throw new IllegalArgumentException("Invalid ingredient name (name not valid)");
+        }
     }
 
     public int getQuantity() {
@@ -56,6 +59,29 @@ public final class Ingredient {
     @Override
     public String toString() {
         return "Ingredient: " + this.name + ", Quantity: " + quantity;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 29 * hash + Objects.hashCode(this.name);
+        hash = 29 * hash + this.quantity;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Ingredient other = (Ingredient) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return this.quantity == other.quantity;
     }
 
 }

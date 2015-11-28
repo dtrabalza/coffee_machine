@@ -8,17 +8,24 @@ public class Main {
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         logger.info("Coffee machine started");
-        System.out.println("Super cool coffee machine ready to use!");
+        System.out.println("Super cool coffee machine started!");
 
         InputHandler inputHandler = new InputHandler();
 
+        CoffeeMachine coffeeMachine = new CoffeeMachine();
+        inputHandler.print("Loading coffee machine...");
+        coffeeMachine.loadIngredientsFromMemory();
+        inputHandler.print("Coffee machine loaded and ready!");
+        
+        inputHandler.setCoffeeMachine(coffeeMachine);
+        
         try {
             inputHandler.handleInput();
         } catch (IOException | RuntimeException e) {
             logger.error("Error occurred", e);
-            inputHandler.printUsage();
+            System.exit(0);
         }
 
     }

@@ -49,4 +49,13 @@ public class CoffeeMachine {
         }
     }
 
+    public void loadIngredientsFromMemory() {
+        logger.info("Loading ingredients...");
+        addIngredient(new Ingredient("Water", 20));
+        addIngredient(new Ingredient("Coffee", 20));
+        addIngredient(new Ingredient("Milk", 10));
+        addIngredient(new Ingredient("Chocolate", 5));
+        logger.info("Ingredients loaded");
+    }
+
 }
