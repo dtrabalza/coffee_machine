@@ -1,5 +1,6 @@
 package com.coffee;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -102,6 +103,14 @@ public class CoffeeMachine {
     void init() {
         loadIngredientsFromMemory();
         loadDrinksFromMemory();
+    }
+
+    public List<String> getDrinksNameList() {
+        List<String> drinkNames = new ArrayList<>();
+        for (Drink drink : drinksMap.values()) {
+            drinkNames.add(drink.getName().toLowerCase());
+        }
+        return drinkNames;
     }
 
 }

@@ -129,17 +129,17 @@ public class CoffeeMachineTest {
         drinks.add(new Drink("Chocolate")
                 .addIngredient(new Ingredient("Milk", 2))
                 .addIngredient(new Ingredient("Chocolate", 1)));
-        
+
         assertNotNull(machine.getDrinks());
         assertTrue(drinks.size() == machine.getDrinks().size());
         assertTrue(machine.getDrinks().containsAll(drinks));
     }
-    
+
     @Test
     public void coffeeMachineInitLoadsIngredientsAndDrinksFromMemory() {
         CoffeeMachine machine = new CoffeeMachine();
         machine.init();
-        
+
         List<Drink> drinks = new ArrayList<>();
         drinks.add(new Drink("Espresso")
                 .addIngredient(new Ingredient("Water", 1))
@@ -154,7 +154,7 @@ public class CoffeeMachineTest {
         drinks.add(new Drink("Chocolate")
                 .addIngredient(new Ingredient("Milk", 2))
                 .addIngredient(new Ingredient("Chocolate", 1)));
-        
+
         assertNotNull(machine.getDrinks());
         assertTrue(drinks.size() == machine.getDrinks().size());
         assertTrue(machine.getDrinks().containsAll(drinks));
@@ -165,6 +165,25 @@ public class CoffeeMachineTest {
         assertTrue(machine.getIngredients().contains(new Ingredient("Coffee", 20)));
         assertTrue(machine.getIngredients().contains(new Ingredient("Milk", 10)));
         assertTrue(machine.getIngredients().contains(new Ingredient("Chocolate", 5)));
-    }    
+    }
 
+    @Test
+    public void getDrinksNameListReturnsTheDrinkNames() {
+        CoffeeMachine machine = new CoffeeMachine();
+
+        machine.addDrink(new Drink("Espresso")
+                .addIngredient(new Ingredient("Water", 1))
+                .addIngredient(new Ingredient("Coffee", 1)));
+        machine.addDrink(new Drink("Coffee")
+                .addIngredient(new Ingredient("Water", 2))
+                .addIngredient(new Ingredient("Coffee", 1)));
+
+        ArrayList<String> list = new ArrayList<String>() {
+            {
+                add("espresso");
+                add("coffee");
+            }
+        };
+        assertEquals(list, machine.getDrinksNameList());
+    }
 }
