@@ -1,5 +1,7 @@
 package com.coffee;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -22,6 +24,17 @@ public class PropertiesFileDrinksLoader {
 
             properties.load(in);
             logger.debug("Property file {} loaded", fileName);
+        }
+    }
+
+    public PropertiesFileDrinksLoader(File file) throws IOException {
+        try (InputStream in = new FileInputStream(file)) {
+            if (in == null) {
+                throw new IOException("Could not find " + file);
+            }
+
+            properties.load(in);
+            logger.debug("Property file {} loaded", file);
         }
     }
 

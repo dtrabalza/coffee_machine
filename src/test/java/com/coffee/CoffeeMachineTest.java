@@ -8,11 +8,6 @@ import org.junit.Test;
 
 public class CoffeeMachineTest {
 
-    @Test(expected = IllegalArgumentException.class)
-    public void coffeeMachineRaisesAnExceptionIfIngredientListIsNull() {
-        new CoffeeMachine(null);
-    }
-
     @Test
     public void coffeeMachineCanLoadOneIngredient() {
         List<Ingredient> ingredients = new ArrayList<>();

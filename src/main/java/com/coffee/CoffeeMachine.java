@@ -1,5 +1,7 @@
 package com.coffee;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,10 +19,19 @@ public class CoffeeMachine {
     private Map<String, Ingredient> ingredientMap;
 
     private Map<String, Drink> drinksMap;
+    
+    private final PropertiesFileDrinksLoader loader;
 
     public CoffeeMachine() {
         ingredientMap = new HashMap<>();
         drinksMap = new HashMap<>();
+        loader = null;
+    }
+
+    public CoffeeMachine(String propertyFile) throws IOException {
+        ingredientMap = new HashMap<>();
+        drinksMap = new HashMap<>();
+        loader = new PropertiesFileDrinksLoader(new File(propertyFile));
     }
 
     public CoffeeMachine(List<Ingredient> ingredients) {
@@ -106,7 +117,11 @@ public class CoffeeMachine {
 
     public void init() {
         loadIngredientsFromMemory();
-        loadDrinksFromMemory();
+        if (loader == null) {
+            loadDrinksFromMemory();
+        } else {
+            loadDrinks(loader.loadDrinks());
+        }
     }
 
     public List<String> getDrinksNameList() {
@@ -137,4 +152,5 @@ public class CoffeeMachine {
             addDrink(drink);
         });
     }
+
 }
