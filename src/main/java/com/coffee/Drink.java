@@ -68,10 +68,7 @@ public final class Drink {
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        if (!Objects.equals(this.ingredients, other.ingredients)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.ingredients, other.ingredients);
     }
 
 }
