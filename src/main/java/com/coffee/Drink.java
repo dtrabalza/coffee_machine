@@ -8,6 +8,8 @@ import java.util.Set;
 
 public final class Drink {
 
+    private final int MAX_NUMBER_OF_INGREDIENTS = 5;
+
     private String name;
 
     private Set<Ingredient> ingredients;
@@ -37,6 +39,10 @@ public final class Drink {
     public Drink addIngredient(Ingredient ingredient) {
         if (ingredients.contains(ingredient)) {
             throw new IllegalArgumentException("Cannot add twice the same ingredient");
+        }
+
+        if (ingredients.size() >= MAX_NUMBER_OF_INGREDIENTS) {
+            throw new IllegalStateException("Cannot add more than five ingredients");
         }
 
         ingredients.add(ingredient);

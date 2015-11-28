@@ -67,4 +67,28 @@ public class DrinkTest {
         new Drink(" ");
     }
 
+    @Test
+    public void canCreateDrinksWithFiveIngredients() {
+        Drink drink = new Drink("ImpossibleDrink");
+        drink.addIngredient(new Ingredient("One", 1));
+        drink.addIngredient(new Ingredient("Two", 2));
+        drink.addIngredient(new Ingredient("Three", 3));
+        drink.addIngredient(new Ingredient("Four", 4));
+        drink.addIngredient(new Ingredient("Five", 5));
+
+        assertTrue(drink.getIngredients().size() == 5);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void cannotCreateDrinksWithMoreThanFiveIngredients() {
+        Drink drink = new Drink("ImpossibleDrink");
+        drink.addIngredient(new Ingredient("One", 1));
+        drink.addIngredient(new Ingredient("Two", 2));
+        drink.addIngredient(new Ingredient("Three", 3));
+        drink.addIngredient(new Ingredient("Four", 4));
+        drink.addIngredient(new Ingredient("Five", 5));
+        drink.addIngredient(new Ingredient("Six", 6));
+        drink.addIngredient(new Ingredient("Seven", 7));
+    }
+
 }
