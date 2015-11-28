@@ -1,6 +1,7 @@
 package com.coffee;
 
 import java.io.IOException;
+import java.util.Collection;
 import jline.TerminalFactory;
 import jline.console.ConsoleReader;
 import org.slf4j.Logger;
@@ -61,7 +62,8 @@ public class InputHandler {
             switch (line.toLowerCase()) {
                 case LIST_COMMAND:
                     logger.debug("User enter command \"{}\"", LIST_COMMAND);
-                    console.println("Listing drinks...");
+                    print("Available drinks are:");
+                    print(coffeeMachine.getDrinks());
                     break;
                 case HELP_COMMAND:
                     logger.debug("User enter command \"{}\"", HELP_COMMAND);
@@ -91,12 +93,11 @@ public class InputHandler {
         console.println("*************** HELP ***************");
         console.println();
     }
-    
-    private void printCoffeeMachineIngredients() throws IOException
-    {
+
+    private void printCoffeeMachineIngredients() throws IOException {
         console.println();
         console.println("********** COFFEE MACHINE INGREDIENTS **********");
-        for ( Ingredient ingredient : coffeeMachine.getIngredients()) {
+        for (Ingredient ingredient : coffeeMachine.getIngredients()) {
             console.println(ingredient.getName() + ": " + ingredient.getQuantity());
         }
         console.println("********** COFFEE MACHINE INGREDIENTS **********");
@@ -109,6 +110,12 @@ public class InputHandler {
         } catch (IOException ex) {
             logger.error("Could not print to console", ex);
         }
+    }
+
+    public void print(Collection collection) {
+        collection.stream().forEach((c) -> {
+            print(c.toString());
+        });
     }
 
     public CoffeeMachine getCoffeeMachine() {
