@@ -35,8 +35,8 @@ public class IngredientTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void cannotCreateIngredientsWithZeroOrLowerQuantity() {
-        new Ingredient("Water", 0);
+    public void cannotCreateIngredientsWithNegativeQuantity() {
+        new Ingredient("Water", -1);
     }
 
     @Test(expected = IllegalArgumentException.class)

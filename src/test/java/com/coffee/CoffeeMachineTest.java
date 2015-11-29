@@ -287,5 +287,23 @@ public class CoffeeMachineTest {
         Drink d = coffeeMachine.getDrinkByName("Espresso");
         assertTrue(d.getIngredientByName("Coffee").getQuantity() == 2);
     }
+    
+    @Test
+    public void prepareADrinkWithSugarWorks() {
+        CoffeeMachine coffeeMachine = new CoffeeMachine();
+        coffeeMachine.init();
+
+        Drink espresso = coffeeMachine.getDrinkByName("Espresso");
+        espresso.addSugar();
+        
+        coffeeMachine.prepareDrink(espresso);
+        
+        assertTrue(
+            coffeeMachine.getIngredients().contains(new Ingredient("Water", 18)));
+        assertTrue(
+            coffeeMachine.getIngredients().contains(new Ingredient("Coffee", 18)));
+        assertTrue(
+            coffeeMachine.getIngredients().contains(new Ingredient("Sugar", 9)));
+    }
 
 }

@@ -6,10 +6,15 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class Drink {
 
+    private static final Logger logger = LoggerFactory.getLogger(InputHandler.class);
+    
     private final int MAX_NUMBER_OF_INGREDIENTS = 5;
+    private final int MAX_SUGAR_QUANTITY = 3;
 
     private String name;
 
@@ -51,6 +56,8 @@ public final class Drink {
             throw new IllegalStateException("Cannot add more than five ingredients");
         }
 
+        logger.info("Adding {} to {}", ingredient, this);
+        
         ingredientsMap.put(ingredient.getName(), ingredient);
         return this;
     }
@@ -120,6 +127,22 @@ public final class Drink {
 
     void addMilk() {
         addIngredient(new Ingredient("Milk", 1));
+    }
+
+    public void addSugar() {
+        String ingredientName = "Sugar";
+        if (ingredientsMap.containsKey(ingredientName)) {           
+            Ingredient sugar = ingredientsMap.get(ingredientName);
+            if (sugar.getQuantity() < MAX_SUGAR_QUANTITY) {
+                logger.debug("{} already present in {}. Increasing its quantity", ingredientName, this);
+                sugar.increaseQuantity(1);
+            } else {
+                throw new IllegalStateException("Cannot add more sugar; I will not held responsible for your cholesterol!");
+            }
+        } else {
+            logger.debug("{} not present in {}. Adding it.", ingredientName, this);
+            addIngredient(new Ingredient(ingredientName, 1));
+        }
     }
 
 }

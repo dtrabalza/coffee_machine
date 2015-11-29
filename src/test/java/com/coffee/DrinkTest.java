@@ -166,11 +166,54 @@ public class DrinkTest {
     @Test
     public void cannotAddMilkIfDrinkHasMilk() {
         Drink cappuccino = new Drink();
-        cappuccino.setName("Espresso");
+        cappuccino.setName("Cappuccino");
         cappuccino.addIngredient(new Ingredient("Coffee", 2));
         cappuccino.addIngredient(new Ingredient("Water", 2));
         cappuccino.addIngredient(new Ingredient("Milk", 2));
 
         assertFalse(cappuccino.canAddMilk());
+    }
+
+    @Test
+    public void canAddSugarToADrink() {
+        Drink espresso = new Drink();
+        espresso.setName("Espresso");
+        espresso.addIngredient(new Ingredient("Coffee", 2));
+        espresso.addIngredient(new Ingredient("Water", 2));
+
+        espresso.addSugar();
+
+        assertEquals(new Ingredient("Sugar", 1), espresso.getIngredientByName("Sugar"));
+        assertEquals(new Ingredient("Coffee", 2), espresso.getIngredientByName("Coffee"));
+        assertEquals(new Ingredient("Water", 2), espresso.getIngredientByName("Water"));
+    }
+
+    @Test
+    public void canAddMiltipleSugarToADrink() {
+        Drink espresso = new Drink();
+        espresso.setName("Espresso");
+        espresso.addIngredient(new Ingredient("Coffee", 2));
+        espresso.addIngredient(new Ingredient("Water", 2));
+
+        espresso.addSugar();
+        espresso.addSugar();
+        espresso.addSugar();
+
+        assertEquals(new Ingredient("Sugar", 3), espresso.getIngredientByName("Sugar"));
+        assertEquals(new Ingredient("Coffee", 2), espresso.getIngredientByName("Coffee"));
+        assertEquals(new Ingredient("Water", 2), espresso.getIngredientByName("Water"));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void cannotAddTooMuchSugarToADrink() {
+        Drink espresso = new Drink();
+        espresso.setName("Espresso");
+        espresso.addIngredient(new Ingredient("Coffee", 2));
+        espresso.addIngredient(new Ingredient("Water", 2));
+
+        espresso.addSugar();
+        espresso.addSugar();
+        espresso.addSugar();
+        espresso.addSugar();
     }
 }

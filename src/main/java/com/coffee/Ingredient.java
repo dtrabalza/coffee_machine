@@ -43,7 +43,7 @@ public final class Ingredient {
     }
 
     public void setQuantity(int quantity) {
-        if (quantity <= 0 || quantity > MAX_QUANTITY) {
+        if (quantity < 0 || quantity > MAX_QUANTITY) {
             throw new IllegalArgumentException("Invalid ingredient quantity");
         }
         this.quantity = quantity;
@@ -51,7 +51,7 @@ public final class Ingredient {
 
     @Override
     public String toString() {
-        return "Ingredient: " + this.name + " [" + quantity + "]";
+        return this.name + " [" + quantity + "]";
     }
 
     @Override

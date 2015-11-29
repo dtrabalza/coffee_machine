@@ -12,6 +12,7 @@ import jline.console.completer.ArgumentCompleter;
 import jline.console.completer.Completer;
 import jline.console.completer.NullCompleter;
 import jline.console.completer.StringsCompleter;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,7 +64,7 @@ public class InputHandler {
 
     public void handleInput() throws IOException {
 
-        printUsage();
+        printHelp();
 
         logger.info("Coffee machine ready");
 
@@ -75,12 +76,12 @@ public class InputHandler {
                 print(coffeeMachine.getDrinks());
             } else if (line.trim().equalsIgnoreCase(HELP_COMMAND)) {
                 logger.debug("User enter command \"{}\"", HELP_COMMAND);
-                printUsage();
+                printHelp();
             } else if (line.startsWith(PREPARE_COMMAND)) {
                 handlePrepareCommand(line);
             } else {
                 logger.debug("User enter and unrecognised command");
-                printUsage();
+                printHelp();
             }
         }
 
@@ -111,7 +112,11 @@ public class InputHandler {
                     }
                 }
 
-                //int count = StringUtils.countMatches("a.b.c.d", ".");
+                int sugarLumps = StringUtils.countMatches(line, " s");
+                for (int i = 0; i < sugarLumps; i++) {
+                    drink.addSugar();
+                }
+                
                 logger.info("Preparing drink: {}", drink);
                 coffeeMachine.prepareDrink(drink);
                 print("Your drink is ready! Enjoy your " + drink);
@@ -135,7 +140,7 @@ public class InputHandler {
         return console;
     }
 
-    public void printUsage() throws IOException {
+    public void printHelp() throws IOException {
         console.println();
         printCoffeeMachineIngredients();
         console.println("*************** HELP PAGE ***************");
@@ -144,10 +149,11 @@ public class InputHandler {
             console.println(command.getName() + "     " + command.getDescription());
         }
         console.println();
-        console.println("Drink modifiers:");
+        console.println("Drink modifiers (space separated) [strength] [milk] [sugar] ");
         console.println("+" + "   " + "Increases Drink's strength");
         console.println("-" + "   " + "Decreases Drink's strength");
         console.println("m" + "   " + "Adds milk (only supported by some drinks)");
+        console.println("s" + "   " + "Adds one lump of sugar (add more \"s\" for additional lumps)");
         console.println();
         console.println("HINT: Use TAB for autocomplete");
         console.println("*************** HELP PAGE ***************");
@@ -209,6 +215,18 @@ public class InputHandler {
                                 new StringsCompleter(PREPARE_COMMAND),
                                 new StringsCompleter(coffeeMachine.getDrinksNameList()),
                                 new StringsCompleter("+"),
+                                new StringsCompleter("s"),
+                                new NullCompleter()),
+                        new ArgumentCompleter(
+                                new StringsCompleter(PREPARE_COMMAND),
+                                new StringsCompleter(coffeeMachine.getDrinksNameList()),
+                                new StringsCompleter("-"),
+                                new StringsCompleter("s"),
+                                new NullCompleter()),
+                        new ArgumentCompleter(
+                                new StringsCompleter(PREPARE_COMMAND),
+                                new StringsCompleter(coffeeMachine.getDrinksNameList()),
+                                new StringsCompleter("+"),
                                 new StringsCompleter("m"),
                                 new NullCompleter()),
                         new ArgumentCompleter(
@@ -220,7 +238,44 @@ public class InputHandler {
                         new ArgumentCompleter(
                                 new StringsCompleter(PREPARE_COMMAND),
                                 new StringsCompleter(coffeeMachine.getDrinksNameList()),
+                                new StringsCompleter("+"),
                                 new StringsCompleter("m"),
+                                new StringsCompleter("s"),
+                                new NullCompleter()),
+                        new ArgumentCompleter(
+                                new StringsCompleter(PREPARE_COMMAND),
+                                new StringsCompleter(coffeeMachine.getDrinksNameList()),
+                                new StringsCompleter("-"),
+                                new StringsCompleter("m"),
+                                new StringsCompleter("s"),
+                                new NullCompleter()),
+                        new ArgumentCompleter(
+                                new StringsCompleter(PREPARE_COMMAND),
+                                new StringsCompleter(coffeeMachine.getDrinksNameList()),
+                                new StringsCompleter("m"),
+                                new NullCompleter()),
+                        new ArgumentCompleter(
+                                new StringsCompleter(PREPARE_COMMAND),
+                                new StringsCompleter(coffeeMachine.getDrinksNameList()),
+                                new StringsCompleter("m"),
+                                new StringsCompleter("s"),
+                                new NullCompleter()),
+                        new ArgumentCompleter(
+                                new StringsCompleter(PREPARE_COMMAND),
+                                new StringsCompleter(coffeeMachine.getDrinksNameList()),
+                                new StringsCompleter("m"),
+                                new StringsCompleter("+"),
+                                new NullCompleter()),
+                        new ArgumentCompleter(
+                                new StringsCompleter(PREPARE_COMMAND),
+                                new StringsCompleter(coffeeMachine.getDrinksNameList()),
+                                new StringsCompleter("m"),
+                                new StringsCompleter("-"),
+                                new NullCompleter()),
+                        new ArgumentCompleter(
+                                new StringsCompleter(PREPARE_COMMAND),
+                                new StringsCompleter(coffeeMachine.getDrinksNameList()),
+                                new StringsCompleter("s"),
                                 new NullCompleter()),
                         new ArgumentCompleter(
                                 new StringsCompleter(LIST_COMMAND),
