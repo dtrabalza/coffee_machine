@@ -144,6 +144,10 @@ public class CoffeeMachine {
     }
 
     private void consumeIngredient(Ingredient ingredient) {
+        if (!ingredientMap.containsKey(ingredient.getName())) {
+            throw new IllegalStateException("The ingredient \""
+            + ingredient.getName() + "\" is not in the coffee machine!");
+        }
         ingredientMap.get(ingredient.getName()).reduceQuantity(ingredient.getQuantity());
     }
 

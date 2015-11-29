@@ -70,7 +70,7 @@ public final class Ingredient {
 
     void reduceQuantity(int value) {
         if (value > quantity) {
-            throw new IllegalStateException("Cannot reduce " + value + "from the quantity of the ingredient: " + this);
+            throw new IllegalStateException("Cannot use more: " + this + ".");
         }
         quantity = quantity - value;
     }

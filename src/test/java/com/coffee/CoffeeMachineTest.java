@@ -216,6 +216,20 @@ public class CoffeeMachineTest {
         assertTrue(coffeeMachine.getIngredientsMap().get("Coffee").getQuantity() == 19);
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void prepareDrinkFailsIfIngredientDoesNotExist() {
+        CoffeeMachine coffeeMachine = new CoffeeMachine();
+
+        coffeeMachine.addIngredient(new Ingredient("Water", 20));
+        coffeeMachine.addIngredient(new Ingredient("Coffee", 20));
+
+        Drink wEspresso = new Drink("WEspresso")
+                .addIngredient(new Ingredient("Wine", 1))
+                .addIngredient(new Ingredient("Coffee", 1));
+
+        coffeeMachine.prepareDrink(wEspresso);
+    }
+
     @Test
     public void bulkLoadDrinksWorks() {
         CoffeeMachine coffeeMachine = new CoffeeMachine();

@@ -84,8 +84,8 @@ public class InputHandler {
                         print("Your drink is ready! Enjoy your " + drink);
                         printCoffeeMachineIngredients();
                     }catch(IllegalStateException e){
-                        print("Cannot prepare your drink (probably there are not enough ingredients!). "
-                                + "Please ask the coffee machine guy or whichever italian you can find");
+                        print("Cannot prepare your drink because: " + e.getMessage() + " "
+                                + "Please ask the coffee machine guy or whichever italian you can find.");
                     }
                 } else {
                     print("Sorry, drink not present. Try listing the drinks using the command \"" + LIST_COMMAND + "\"");
