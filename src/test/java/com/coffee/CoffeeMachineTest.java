@@ -76,11 +76,12 @@ public class CoffeeMachineTest {
         machine.loadIngredientsFromMemory();
 
         assertNotNull(machine.getIngredients());
-        assertTrue(machine.getIngredients().size() == 4);
+        assertTrue(machine.getIngredients().size() == 5);
         assertTrue(machine.getIngredients().contains(new Ingredient("Water", 20)));
         assertTrue(machine.getIngredients().contains(new Ingredient("Coffee", 20)));
-        assertTrue(machine.getIngredients().contains(new Ingredient("Milk", 10)));
-        assertTrue(machine.getIngredients().contains(new Ingredient("Chocolate", 5)));
+        assertTrue(machine.getIngredients().contains(new Ingredient("Milk", 20)));
+        assertTrue(machine.getIngredients().contains(new Ingredient("Chocolate", 10)));
+        assertTrue(machine.getIngredients().contains(new Ingredient("Sugar", 10)));
     }
 
     @Test
@@ -154,11 +155,12 @@ public class CoffeeMachineTest {
         assertTrue(machine.getDrinks().containsAll(drinks));
 
         assertNotNull(machine.getIngredients());
-        assertTrue(machine.getIngredients().size() == 4);
+        assertTrue(machine.getIngredients().size() == 5);
         assertTrue(machine.getIngredients().contains(new Ingredient("Water", 20)));
         assertTrue(machine.getIngredients().contains(new Ingredient("Coffee", 20)));
-        assertTrue(machine.getIngredients().contains(new Ingredient("Milk", 10)));
-        assertTrue(machine.getIngredients().contains(new Ingredient("Chocolate", 5)));
+        assertTrue(machine.getIngredients().contains(new Ingredient("Milk", 20)));
+        assertTrue(machine.getIngredients().contains(new Ingredient("Chocolate", 10)));
+        assertTrue(machine.getIngredients().contains(new Ingredient("Sugar", 10)));
     }
 
     @Test

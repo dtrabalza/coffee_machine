@@ -79,8 +79,9 @@ public class CoffeeMachine {
         logger.info("Loading ingredients...");
         addIngredient(new Ingredient("Water", 20));
         addIngredient(new Ingredient("Coffee", 20));
-        addIngredient(new Ingredient("Milk", 10));
-        addIngredient(new Ingredient("Chocolate", 5));
+        addIngredient(new Ingredient("Milk", 20));
+        addIngredient(new Ingredient("Chocolate", 10));
+        addIngredient(new Ingredient("Sugar", 10));
         logger.info("Ingredients loaded");
     }
 
