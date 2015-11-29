@@ -2,7 +2,6 @@ package com.coffee.dao;
 
 import com.coffee.core.Drink;
 import com.coffee.core.Ingredient;
-import com.coffee.dao.PropertiesFileDrinksLoader;
 import java.io.IOException;
 import java.util.List;
 import org.junit.Test;

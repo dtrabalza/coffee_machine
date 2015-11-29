@@ -73,7 +73,7 @@ public class InputHandler {
 
         logger.info("Coffee machine ready");
 
-        String line = null;
+        String line;
         while ((line = console.readLine()) != null) {
             if (line.trim().equalsIgnoreCase(LIST_COMMAND)) {
                 logger.debug("User enter command \"{}\"", LIST_COMMAND);

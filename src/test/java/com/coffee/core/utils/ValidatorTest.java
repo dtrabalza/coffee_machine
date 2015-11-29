@@ -2,7 +2,6 @@ package com.coffee.core.utils;
 
 import com.coffee.utils.Validator;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class ValidatorTest {
 
