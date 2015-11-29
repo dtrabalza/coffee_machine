@@ -27,7 +27,7 @@ public class PropertiesFileDrinksLoaderTest {
 
         assertTrue(drinks.size() == 4);
         assertTrue(drinks.get(0).getName().equals("Espresso"));
-        assertTrue(drinks.get(2).getIngredients().contains(new Ingredient("Coffee", 1)));
+        assertTrue(drinks.get(2).getIngredients().contains(new Ingredient("Coffee", 2)));
         assertTrue(drinks.get(3).getName().equals("Chocolate"));
     }
 
