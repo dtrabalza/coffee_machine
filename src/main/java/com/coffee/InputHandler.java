@@ -29,7 +29,7 @@ public class InputHandler {
 
         LIST(LIST_COMMAND, "Lists the available drinks"),
         HELP(HELP_COMMAND, "Prints the help page"),
-        PREPARE(PREPARE_COMMAND, "prepare drink_name [strength] prepares the selected drink");
+        PREPARE(PREPARE_COMMAND, "prepare drink_name [drink_modifiers] prepares the selected drink");
 
         private final String name;
         private final String description;
@@ -95,23 +95,36 @@ public class InputHandler {
             try {
 
                 if (line.contains("+")) {
+                    logger.info("Increasing strength to {}", drink);
                     drink.increaseStrength(1);
                 }
                 if (line.contains("-")) {
+                    logger.info("Decreasing strength to {}", drink);
                     drink.decreaseStrength(1);
                 }
-                //int count = StringUtils.countMatches("a.b.c.d", ".");
+                if (line.contains("m")) {
+                    if (drink.canAddMilk()) {
+                        logger.info("Adding milk to {}", drink);
+                        drink.addMilk();
+                    } else {
+                        throw new IllegalStateException("The drink has already milk!");
+                    }
+                }
 
+                //int count = StringUtils.countMatches("a.b.c.d", ".");
                 logger.info("Preparing drink: {}", drink);
                 coffeeMachine.prepareDrink(drink);
                 print("Your drink is ready! Enjoy your " + drink);
                 logger.info("Successfully prepared {}", drink);
                 printCoffeeMachineIngredients();
             } catch (IllegalStateException e) {
-                print("Cannot prepare your drink because: " + e.getMessage() + " "
-                        + "Please ask the coffee machine guy or whichever italian you can find :)");
+                String message = "Cannot prepare your drink because: " + e.getMessage() + " "
+                        + "Please ask the coffee machine guy or whichever italian you can find :)";
+                print(message);
+                logger.warn(message);
             } catch (IllegalArgumentException e) {
                 print("Cannot prepare your drink because: " + e.getMessage());
+                logger.warn("Cannot prepare drink {} because: {}", drink, e.getMessage());
             }
         } else {
             print("Sorry, drink not present. Try listing the drinks using the command \"" + LIST_COMMAND + "\"");
@@ -125,16 +138,19 @@ public class InputHandler {
     public void printUsage() throws IOException {
         console.println();
         printCoffeeMachineIngredients();
-        console.println("*************** HELP ***************");
+        console.println("*************** HELP PAGE ***************");
         console.println("CTRL+D" + "   " + "Quit");
         for (Command command : Command.values()) {
             console.println(command.getName() + "     " + command.getDescription());
         }
+        console.println();
+        console.println("Drink modifiers:");
         console.println("+" + "   " + "Increases Drink's strength");
         console.println("-" + "   " + "Decreases Drink's strength");
+        console.println("m" + "   " + "Adds milk (only supported by some drinks)");
         console.println();
         console.println("HINT: Use TAB for autocomplete");
-        console.println("*************** HELP ***************");
+        console.println("*************** HELP PAGE ***************");
         console.println();
     }
 
@@ -188,6 +204,23 @@ public class InputHandler {
                                 new StringsCompleter(PREPARE_COMMAND),
                                 new StringsCompleter(coffeeMachine.getDrinksNameList()),
                                 new StringsCompleter("-"),
+                                new NullCompleter()),
+                        new ArgumentCompleter(
+                                new StringsCompleter(PREPARE_COMMAND),
+                                new StringsCompleter(coffeeMachine.getDrinksNameList()),
+                                new StringsCompleter("+"),
+                                new StringsCompleter("m"),
+                                new NullCompleter()),
+                        new ArgumentCompleter(
+                                new StringsCompleter(PREPARE_COMMAND),
+                                new StringsCompleter(coffeeMachine.getDrinksNameList()),
+                                new StringsCompleter("-"),
+                                new StringsCompleter("m"),
+                                new NullCompleter()),
+                        new ArgumentCompleter(
+                                new StringsCompleter(PREPARE_COMMAND),
+                                new StringsCompleter(coffeeMachine.getDrinksNameList()),
+                                new StringsCompleter("m"),
                                 new NullCompleter()),
                         new ArgumentCompleter(
                                 new StringsCompleter(LIST_COMMAND),

@@ -92,11 +92,21 @@ public class DrinkTest {
         espresso.setName("Espresso");
         espresso.addIngredient(new Ingredient("Coffee", 2));
         espresso.addIngredient(new Ingredient("Water", 2));
-        
+
         espresso.increaseStrength(1);
-        
+
         assertTrue(espresso.getIngredientByName("Coffee").getQuantity() == 3);
         assertTrue(espresso.getIngredientByName("Water").getQuantity() == 2);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void getIngredientByNameRaisesExceptionIfIngredientNotExisting() {
+        Drink espresso = new Drink();
+        espresso.setName("Espresso");
+        espresso.addIngredient(new Ingredient("Coffee", 2));
+        espresso.addIngredient(new Ingredient("Water", 2));
+
+        espresso.getIngredientByName("Milk");
     }
 
     @Test
@@ -105,31 +115,31 @@ public class DrinkTest {
         espresso.setName("Espresso");
         espresso.addIngredient(new Ingredient("Coffee", 2));
         espresso.addIngredient(new Ingredient("Water", 2));
-        
+
         espresso.decreaseStrength(1);
-        
+
         assertTrue(espresso.getIngredientByName("Coffee").getQuantity() == 1);
         assertTrue(espresso.getIngredientByName("Water").getQuantity() == 2);
     }
-    
+
     @Test
     public void CopyConstructorWorks() {
         Drink d1 = new Drink("Espresso");
         d1.addIngredient(new Ingredient("Coffee", 2));
         d1.addIngredient(new Ingredient("Water", 2));
-        
+
         assertEquals(new Ingredient("Coffee", 2),
                 d1.getIngredientByName("Coffee"));
         assertEquals(new Ingredient("Water", 2),
                 d1.getIngredientByName("Water"));
-        
+
         Drink d2 = new Drink(d1);
-        
+
         assertEquals(new Ingredient("Coffee", 2),
                 d2.getIngredientByName("Coffee"));
         assertEquals(new Ingredient("Water", 2),
                 d2.getIngredientByName("Water"));
-        
+
         d2.decreaseStrength(1);
 
         assertEquals(new Ingredient("Coffee", 1),
@@ -141,5 +151,26 @@ public class DrinkTest {
                 d1.getIngredientByName("Coffee"));
         assertEquals(new Ingredient("Water", 2),
                 d1.getIngredientByName("Water"));
+    }
+
+    @Test
+    public void canAddMilkIfDrinkDoesNotContainAlreadyMilk() {
+        Drink espresso = new Drink();
+        espresso.setName("Espresso");
+        espresso.addIngredient(new Ingredient("Coffee", 2));
+        espresso.addIngredient(new Ingredient("Water", 2));
+
+        assertTrue(espresso.canAddMilk());
+    }
+
+    @Test
+    public void cannotAddMilkIfDrinkHasMilk() {
+        Drink cappuccino = new Drink();
+        cappuccino.setName("Espresso");
+        cappuccino.addIngredient(new Ingredient("Coffee", 2));
+        cappuccino.addIngredient(new Ingredient("Water", 2));
+        cappuccino.addIngredient(new Ingredient("Milk", 2));
+
+        assertFalse(cappuccino.canAddMilk());
     }
 }

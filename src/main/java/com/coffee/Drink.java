@@ -84,6 +84,10 @@ public final class Drink {
     }
 
     public Ingredient getIngredientByName(String ingredientName) {
+        if (!ingredientsMap.containsKey(ingredientName)) {
+            throw new IllegalStateException("Could not find ingredient " 
+                    + ingredientName + " in " + this);
+        }
         return ingredientsMap.get(ingredientName);
     }
 
@@ -109,5 +113,13 @@ public final class Drink {
         
         return clonedMap;
     }
-    
+
+    boolean canAddMilk() {
+        return !ingredientsMap.containsKey("Milk");
+    }
+
+    void addMilk() {
+        addIngredient(new Ingredient("Milk", 1));
+    }
+
 }
