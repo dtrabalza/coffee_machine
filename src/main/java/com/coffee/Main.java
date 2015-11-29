@@ -16,7 +16,6 @@ public class Main {
 
         InputHandler inputHandler = new InputHandler();
 
-//        CoffeeMachine coffeeMachine = new CoffeeMachine();
         CoffeeMachine coffeeMachine = new CoffeeMachine(DRINKS_FILE);
         inputHandler.print("Loading coffee machine...");
         coffeeMachine.init();

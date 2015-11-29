@@ -26,7 +26,7 @@ public final class Drink {
     }
 
     public Drink(Drink copy) {
-        this.name = new String(copy.getName());
+        this.name = copy.getName();
         this.ingredientsMap = deepCopy(copy.getIngredientsMap());
     }
 

@@ -28,12 +28,14 @@ public class InputHandler {
     public final static String LIST_COMMAND = "list";
     public final static String HELP_COMMAND = "help";
     public final static String PREPARE_COMMAND = "prepare";
+    public final static String SAVE_COMMAND = "save";
 
     public enum Command {
 
         LIST(LIST_COMMAND, "Lists the available drinks"),
         HELP(HELP_COMMAND, "Prints the help page"),
-        PREPARE(PREPARE_COMMAND, "prepare drink_name [drink_modifiers] prepares the selected drink");
+        PREPARE(PREPARE_COMMAND, "prepare drink_name [drink_modifiers] prepares the selected drink"),
+        SAVE(SAVE_COMMAND, "save drink_name [drink_modifiers] favorite_name save a favourite drink");
 
         private final String name;
         private final String description;
@@ -82,6 +84,8 @@ public class InputHandler {
                 printHelp();
             } else if (line.startsWith(PREPARE_COMMAND)) {
                 handlePrepareCommand(line);
+            } else if (line.startsWith(SAVE_COMMAND)) {
+                handleSaveCommand(line);
             } else {
                 logger.debug("User enter and unrecognised command");
                 printHelp();
@@ -98,28 +102,8 @@ public class InputHandler {
             Drink drink = coffeeMachine.getDrinkByName(drinkName);
             try {
 
-                if (line.contains("+")) {
-                    logger.info("Increasing strength to {}", drink);
-                    drink.increaseStrength(1);
-                }
-                if (line.contains("-")) {
-                    logger.info("Decreasing strength to {}", drink);
-                    drink.decreaseStrength(1);
-                }
-                if (line.contains("m")) {
-                    if (drink.canAddMilk()) {
-                        logger.info("Adding milk to {}", drink);
-                        drink.addMilk();
-                    } else {
-                        throw new IllegalStateException("The drink has already milk!");
-                    }
-                }
+                parseDrink(line, drink);
 
-                int sugarLumps = StringUtils.countMatches(line, " s");
-                for (int i = 0; i < sugarLumps; i++) {
-                    drink.addSugar();
-                }
-                
                 logger.info("Preparing drink: {}", drink);
                 coffeeMachine.prepareDrink(drink);
                 print("Your drink is ready! Enjoy your " + drink);
@@ -133,6 +117,64 @@ public class InputHandler {
             } catch (IllegalArgumentException e) {
                 print("Cannot prepare your drink because: " + e.getMessage());
                 logger.warn("Cannot prepare drink {} because: {}", drink, e.getMessage());
+            }
+        } else {
+            print("Sorry, drink not present. Try listing the drinks using the command \"" + LIST_COMMAND + "\"");
+        }
+    }
+
+    private void parseDrink(String line, Drink drink) throws IllegalStateException {
+        if (line.contains("+")) {
+            logger.info("Increasing strength to {}", drink);
+            drink.increaseStrength(1);
+        }
+        if (line.contains("-")) {
+            logger.info("Decreasing strength to {}", drink);
+            drink.decreaseStrength(1);
+        }
+        if (line.contains("m")) {
+            if (drink.canAddMilk()) {
+                logger.info("Adding milk to {}", drink);
+                drink.addMilk();
+            } else {
+                throw new IllegalStateException("The drink has already milk!");
+            }
+        }
+
+        int sugarLumps = StringUtils.countMatches(line, " s");
+        for (int i = 0; i < sugarLumps; i++) {
+            drink.addSugar();
+        }
+    }
+
+    private void handleSaveCommand(String line) {
+        Scanner scanner = new Scanner(line);
+        scanner.next();
+        String drinkName = scanner.next();
+
+        String favoriteName = line.substring(line.lastIndexOf(" ") + 1);
+
+        String drinkDescription = line.substring(
+                line.lastIndexOf(drinkName),
+                line.lastIndexOf(favoriteName));
+        if (coffeeMachine.getDrinksNameList().contains(drinkName)) {
+            Drink drink = coffeeMachine.getDrinkByName(drinkName);
+            try {
+                parseDrink(drinkDescription, drink);
+                drink.setName(favoriteName);
+
+                print("Saving drink: " + drink);
+
+                coffeeMachine.addDrink(drink);
+
+                configureAutocomplete();
+            } catch (IllegalStateException e) {
+                String message = "Cannot save your drink because: " + e.getMessage();
+                print(message);
+                logger.warn(message);
+            } catch (IllegalArgumentException e) {
+                print("Cannot save your drink because: " + e.getMessage());
+                logger.warn("Cannot save drink {} because: {}", drink, e.getMessage());
             }
         } else {
             print("Sorry, drink not present. Try listing the drinks using the command \"" + LIST_COMMAND + "\"");
@@ -197,9 +239,22 @@ public class InputHandler {
     }
 
     private void configureAutocomplete() {
+        
+        List<Completer> completorsToRemove = new LinkedList<>();
+        console.getCompleters().stream().forEach((completer) -> {
+            completorsToRemove.add(completer);
+        });
+        completorsToRemove.stream().forEach((toRemove) -> {
+            console.removeCompleter(toRemove);
+        });
+    
         List<Completer> completors = new LinkedList<>();
         completors.add(
                 new AggregateCompleter(
+                        new ArgumentCompleter(
+                                new StringsCompleter(SAVE_COMMAND),
+                                new StringsCompleter(coffeeMachine.getDrinksNameList()),
+                                new NullCompleter()),
                         new ArgumentCompleter(
                                 new StringsCompleter(PREPARE_COMMAND),
                                 new StringsCompleter(coffeeMachine.getDrinksNameList()),
