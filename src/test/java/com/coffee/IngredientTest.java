@@ -63,7 +63,7 @@ public class IngredientTest {
     public void decreaseQuantityDecreasesIngredientsQuantity() {
         Ingredient water = new Ingredient("Water", 10);
 
-        water.reduceQuantity(2);
+        water.decreaseQuantity(2);
 
         assertTrue(8 == water.getQuantity());
     }
@@ -72,7 +72,22 @@ public class IngredientTest {
     public void decreaseQuantityDoesNotRemoveMoreThanTheTotalIngredient() {
         Ingredient water = new Ingredient("Water", 2);
 
-        water.reduceQuantity(10);
+        water.decreaseQuantity(10);
     }
 
+    @Test
+    public void increaseQuantityIncreasesIngredientsQuantity() {
+        Ingredient water = new Ingredient("Water", 10);
+
+        water.increaseQuantity(2);
+
+        assertTrue(12 == water.getQuantity());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void totalQuantityCannotBeMoreThan30() {
+        Ingredient water = new Ingredient("Water", 10);
+
+        water.increaseQuantity(22);
+    }
 }

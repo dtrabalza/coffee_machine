@@ -53,11 +53,6 @@ public class DrinkTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void cannotCreateDrinksWithNullName() {
-        new Drink(null);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
     public void cannotCreateDrinksWithEmptyName() {
         new Drink("");
     }
@@ -91,4 +86,60 @@ public class DrinkTest {
         drink.addIngredient(new Ingredient("Seven", 7));
     }
 
+    @Test
+    public void increaseStrengthIncreasesTheFirstIngredientByOne() {
+        Drink espresso = new Drink();
+        espresso.setName("Espresso");
+        espresso.addIngredient(new Ingredient("Coffee", 2));
+        espresso.addIngredient(new Ingredient("Water", 2));
+        
+        espresso.increaseStrength(1);
+        
+        assertTrue(espresso.getIngredientByName("Coffee").getQuantity() == 3);
+        assertTrue(espresso.getIngredientByName("Water").getQuantity() == 2);
+    }
+
+    @Test
+    public void decreaseStrengthDecreasesTheFirstIngredientByOne() {
+        Drink espresso = new Drink();
+        espresso.setName("Espresso");
+        espresso.addIngredient(new Ingredient("Coffee", 2));
+        espresso.addIngredient(new Ingredient("Water", 2));
+        
+        espresso.decreaseStrength(1);
+        
+        assertTrue(espresso.getIngredientByName("Coffee").getQuantity() == 1);
+        assertTrue(espresso.getIngredientByName("Water").getQuantity() == 2);
+    }
+    
+    @Test
+    public void CopyConstructorWorks() {
+        Drink d1 = new Drink("Espresso");
+        d1.addIngredient(new Ingredient("Coffee", 2));
+        d1.addIngredient(new Ingredient("Water", 2));
+        
+        assertEquals(new Ingredient("Coffee", 2),
+                d1.getIngredientByName("Coffee"));
+        assertEquals(new Ingredient("Water", 2),
+                d1.getIngredientByName("Water"));
+        
+        Drink d2 = new Drink(d1);
+        
+        assertEquals(new Ingredient("Coffee", 2),
+                d2.getIngredientByName("Coffee"));
+        assertEquals(new Ingredient("Water", 2),
+                d2.getIngredientByName("Water"));
+        
+        d2.decreaseStrength(1);
+
+        assertEquals(new Ingredient("Coffee", 1),
+                d2.getIngredientByName("Coffee"));
+        assertEquals(new Ingredient("Water", 2),
+                d2.getIngredientByName("Water"));
+
+        assertEquals(new Ingredient("Coffee", 2),
+                d1.getIngredientByName("Coffee"));
+        assertEquals(new Ingredient("Water", 2),
+                d1.getIngredientByName("Water"));
+    }
 }

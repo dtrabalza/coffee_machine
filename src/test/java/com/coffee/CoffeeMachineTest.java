@@ -112,18 +112,18 @@ public class CoffeeMachineTest {
 
         List<Drink> drinks = new ArrayList<>();
         drinks.add(new Drink("Espresso")
-                .addIngredient(new Ingredient("Water", 1))
-                .addIngredient(new Ingredient("Coffee", 1)));
+                .addIngredient(new Ingredient("Coffee", 2))
+                .addIngredient(new Ingredient("Water", 2)));
         drinks.add(new Drink("Coffee")
-                .addIngredient(new Ingredient("Water", 2))
-                .addIngredient(new Ingredient("Coffee", 1)));
+                .addIngredient(new Ingredient("Coffee", 2))
+                .addIngredient(new Ingredient("Water", 4)));
         drinks.add(new Drink("Cappuccino")
-                .addIngredient(new Ingredient("Water", 1))
-                .addIngredient(new Ingredient("Coffee", 1))
-                .addIngredient(new Ingredient("Milk", 1)));
+                .addIngredient(new Ingredient("Coffee", 2))
+                .addIngredient(new Ingredient("Water", 2))
+                .addIngredient(new Ingredient("Milk", 2)));
         drinks.add(new Drink("Chocolate")
-                .addIngredient(new Ingredient("Milk", 2))
-                .addIngredient(new Ingredient("Chocolate", 1)));
+                .addIngredient(new Ingredient("Chocolate", 2))
+                .addIngredient(new Ingredient("Water", 3)));
 
         assertNotNull(machine.getDrinks());
         assertTrue(drinks.size() == machine.getDrinks().size());
@@ -137,18 +137,18 @@ public class CoffeeMachineTest {
 
         List<Drink> drinks = new ArrayList<>();
         drinks.add(new Drink("Espresso")
-                .addIngredient(new Ingredient("Water", 1))
-                .addIngredient(new Ingredient("Coffee", 1)));
+                .addIngredient(new Ingredient("Coffee", 2))
+                .addIngredient(new Ingredient("Water", 2)));
         drinks.add(new Drink("Coffee")
-                .addIngredient(new Ingredient("Water", 2))
-                .addIngredient(new Ingredient("Coffee", 1)));
+                .addIngredient(new Ingredient("Coffee", 2))
+                .addIngredient(new Ingredient("Water", 4)));
         drinks.add(new Drink("Cappuccino")
-                .addIngredient(new Ingredient("Water", 1))
-                .addIngredient(new Ingredient("Coffee", 1))
-                .addIngredient(new Ingredient("Milk", 1)));
+                .addIngredient(new Ingredient("Coffee", 2))
+                .addIngredient(new Ingredient("Water", 2))
+                .addIngredient(new Ingredient("Milk", 2)));
         drinks.add(new Drink("Chocolate")
-                .addIngredient(new Ingredient("Milk", 2))
-                .addIngredient(new Ingredient("Chocolate", 1)));
+                .addIngredient(new Ingredient("Chocolate", 2))
+                .addIngredient(new Ingredient("Water", 3)));
 
         assertNotNull(machine.getDrinks());
         assertTrue(drinks.size() == machine.getDrinks().size());
@@ -256,6 +256,36 @@ public class CoffeeMachineTest {
         assertNotNull(coffeeMachine.getDrinks());
         assertTrue(drinks.size() == coffeeMachine.getDrinks().size());
         assertTrue(coffeeMachine.getDrinks().containsAll(drinks));
+    }
+
+    @Test
+    public void increaseDrinkStrengthAffectsOnlyOneDrink() {
+        CoffeeMachine coffeeMachine = new CoffeeMachine();
+        coffeeMachine.init();
+
+        Drink dPlus = coffeeMachine.getDrinkByName("Espresso");
+        assertTrue(dPlus.getIngredientByName("Coffee").getQuantity() == 2);
+
+        dPlus.increaseStrength(1);
+        assertTrue(dPlus.getIngredientByName("Coffee").getQuantity() == 3);
+
+        Drink d = coffeeMachine.getDrinkByName("Espresso");
+        assertTrue(d.getIngredientByName("Coffee").getQuantity() == 2);
+    }
+
+    @Test
+    public void decreaseDrinkStrengthAffectsOnlyOneDrink() {
+        CoffeeMachine coffeeMachine = new CoffeeMachine();
+        coffeeMachine.init();
+
+        Drink dMinus = coffeeMachine.getDrinkByName("Espresso");
+        assertTrue(dMinus.getIngredientByName("Coffee").getQuantity() == 2);
+
+        dMinus.decreaseStrength(1);
+        assertTrue(dMinus.getIngredientByName("Coffee").getQuantity() == 1);
+
+        Drink d = coffeeMachine.getDrinkByName("Espresso");
+        assertTrue(d.getIngredientByName("Coffee").getQuantity() == 2);
     }
 
 }

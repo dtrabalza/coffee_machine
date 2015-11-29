@@ -101,18 +101,18 @@ public class CoffeeMachine {
     protected void loadDrinksFromMemory() {
         logger.info("Loading drinks...");
         addDrink(new Drink("Espresso")
-                .addIngredient(new Ingredient("Water", 1))
-                .addIngredient(new Ingredient("Coffee", 1)));
+                .addIngredient(new Ingredient("Coffee", 2))
+                .addIngredient(new Ingredient("Water", 2)));                
         addDrink(new Drink("Coffee")
-                .addIngredient(new Ingredient("Water", 2))
-                .addIngredient(new Ingredient("Coffee", 1)));
+                .addIngredient(new Ingredient("Coffee", 2))
+                .addIngredient(new Ingredient("Water", 4)));
         addDrink(new Drink("Cappuccino")
-                .addIngredient(new Ingredient("Water", 1))
-                .addIngredient(new Ingredient("Coffee", 1))
-                .addIngredient(new Ingredient("Milk", 1)));
+                .addIngredient(new Ingredient("Coffee", 2))
+                .addIngredient(new Ingredient("Water", 2))
+                .addIngredient(new Ingredient("Milk", 2)));
         addDrink(new Drink("Chocolate")
-                .addIngredient(new Ingredient("Milk", 2))
-                .addIngredient(new Ingredient("Chocolate", 1)));
+                .addIngredient(new Ingredient("Chocolate", 2))
+                .addIngredient(new Ingredient("Water", 3)));
         logger.info("Drinks loaded");
     }
 
@@ -134,7 +134,7 @@ public class CoffeeMachine {
     }
 
     public Drink getDrinkByName(String drinkName) {
-        return drinksMap.get(drinkName);
+        return new Drink(drinksMap.get(drinkName));
     }
 
     void prepareDrink(Drink drink) {
@@ -149,7 +149,7 @@ public class CoffeeMachine {
             throw new IllegalStateException("The ingredient \""
             + ingredient.getName() + "\" is not in the coffee machine!");
         }
-        ingredientMap.get(ingredient.getName()).reduceQuantity(ingredient.getQuantity());
+        ingredientMap.get(ingredient.getName()).decreaseQuantity(ingredient.getQuantity());
     }
 
     void loadDrinks(List<Drink> drinks) {

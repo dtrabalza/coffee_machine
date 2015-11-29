@@ -2,6 +2,7 @@ package com.coffee;
 
 import com.coffee.utils.Validator;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -16,6 +17,11 @@ public final class Drink {
 
     public Drink() {
         ingredientsMap = new LinkedHashMap<>();
+    }
+
+    public Drink(Drink copy) {
+        this.name = new String(copy.getName());
+        this.ingredientsMap = deepCopy(copy.getIngredientsMap());
     }
 
     public Drink(String name) {
@@ -77,4 +83,31 @@ public final class Drink {
         return Objects.equals(this.ingredientsMap, other.ingredientsMap);
     }
 
+    public Ingredient getIngredientByName(String ingredientName) {
+        return ingredientsMap.get(ingredientName);
+    }
+
+    void increaseStrength(int value) {
+        ingredientsMap.entrySet().iterator().next().getValue().increaseQuantity(value);
+    }
+
+    void decreaseStrength(int value) {
+        ingredientsMap.entrySet().iterator().next().getValue().decreaseQuantity(value);
+    }
+
+    public Map<String, Ingredient> getIngredientsMap() {
+        return ingredientsMap;
+    }
+
+    private Map<String, Ingredient> deepCopy(Map<String, Ingredient> source) {
+        Map<String, Ingredient> clonedMap = new LinkedHashMap<>();
+        Iterator<String> iterator = source.keySet().iterator();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            clonedMap.put(key, new Ingredient(source.get(key)));
+        }
+        
+        return clonedMap;
+    }
+    
 }

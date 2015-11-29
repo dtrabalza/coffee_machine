@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 import jline.TerminalFactory;
 import jline.console.ConsoleReader;
 import jline.console.completer.AggregateCompleter;
@@ -28,7 +29,7 @@ public class InputHandler {
 
         LIST(LIST_COMMAND, "Lists the available drinks"),
         HELP(HELP_COMMAND, "Prints the help page"),
-        PREPARE(PREPARE_COMMAND, "prepare {drink_name} prepares the selected drink");
+        PREPARE(PREPARE_COMMAND, "prepare drink_name [strength] prepares the selected drink");
 
         private final String name;
         private final String description;
@@ -76,26 +77,45 @@ public class InputHandler {
                 logger.debug("User enter command \"{}\"", HELP_COMMAND);
                 printUsage();
             } else if (line.startsWith(PREPARE_COMMAND)) {
-                String drinkName = line.substring(line.indexOf(PREPARE_COMMAND) + PREPARE_COMMAND.length()).trim();
-                if (coffeeMachine.getDrinksNameList().contains(drinkName)) {
-                    Drink drink = coffeeMachine.getDrinkByName(drinkName);
-                    try {
-                        coffeeMachine.prepareDrink(drink);
-                        print("Your drink is ready! Enjoy your " + drink);
-                        printCoffeeMachineIngredients();
-                    }catch(IllegalStateException e){
-                        print("Cannot prepare your drink because: " + e.getMessage() + " "
-                                + "Please ask the coffee machine guy or whichever italian you can find.");
-                    }
-                } else {
-                    print("Sorry, drink not present. Try listing the drinks using the command \"" + LIST_COMMAND + "\"");
-                }
+                handlePrepareCommand(line);
             } else {
                 logger.debug("User enter and unrecognised command");
                 printUsage();
             }
         }
 
+    }
+
+    private void handlePrepareCommand(String line) throws IOException {
+        Scanner scanner = new Scanner(line);
+        scanner.next();
+        String drinkName = scanner.next();
+        if (coffeeMachine.getDrinksNameList().contains(drinkName)) {
+            Drink drink = coffeeMachine.getDrinkByName(drinkName);
+            try {
+
+                if (line.contains("+")) {
+                    drink.increaseStrength(1);
+                }
+                if (line.contains("-")) {
+                    drink.decreaseStrength(1);
+                }
+                //int count = StringUtils.countMatches("a.b.c.d", ".");
+
+                logger.info("Preparing drink: {}", drink);
+                coffeeMachine.prepareDrink(drink);
+                print("Your drink is ready! Enjoy your " + drink);
+                logger.info("Successfully prepared {}", drink);
+                printCoffeeMachineIngredients();
+            } catch (IllegalStateException e) {
+                print("Cannot prepare your drink because: " + e.getMessage() + " "
+                        + "Please ask the coffee machine guy or whichever italian you can find :)");
+            } catch (IllegalArgumentException e) {
+                print("Cannot prepare your drink because: " + e.getMessage());
+            }
+        } else {
+            print("Sorry, drink not present. Try listing the drinks using the command \"" + LIST_COMMAND + "\"");
+        }
     }
 
     public ConsoleReader getConsole() {
@@ -110,6 +130,8 @@ public class InputHandler {
         for (Command command : Command.values()) {
             console.println(command.getName() + "     " + command.getDescription());
         }
+        console.println("+" + "   " + "Increases Drink's strength");
+        console.println("-" + "   " + "Decreases Drink's strength");
         console.println();
         console.println("HINT: Use TAB for autocomplete");
         console.println("*************** HELP ***************");
@@ -146,16 +168,35 @@ public class InputHandler {
 
     public void setCoffeeMachine(CoffeeMachine coffeeMachine) {
         this.coffeeMachine = coffeeMachine;
+        configureAutocomplete();
+    }
 
+    private void configureAutocomplete() {
         List<Completer> completors = new LinkedList<>();
-
-        completors.add(new AggregateCompleter(
-                new ArgumentCompleter(new StringsCompleter(PREPARE_COMMAND), new StringsCompleter(coffeeMachine.getDrinksNameList()), new NullCompleter()),
-                new ArgumentCompleter(new StringsCompleter(LIST_COMMAND), new NullCompleter()),
-                new ArgumentCompleter(new StringsCompleter(HELP_COMMAND), new NullCompleter())
-        )
+        completors.add(
+                new AggregateCompleter(
+                        new ArgumentCompleter(
+                                new StringsCompleter(PREPARE_COMMAND),
+                                new StringsCompleter(coffeeMachine.getDrinksNameList()),
+                                new NullCompleter()),
+                        new ArgumentCompleter(
+                                new StringsCompleter(PREPARE_COMMAND),
+                                new StringsCompleter(coffeeMachine.getDrinksNameList()),
+                                new StringsCompleter("+"),
+                                new NullCompleter()),
+                        new ArgumentCompleter(
+                                new StringsCompleter(PREPARE_COMMAND),
+                                new StringsCompleter(coffeeMachine.getDrinksNameList()),
+                                new StringsCompleter("-"),
+                                new NullCompleter()),
+                        new ArgumentCompleter(
+                                new StringsCompleter(LIST_COMMAND),
+                                new NullCompleter()),
+                        new ArgumentCompleter(
+                                new StringsCompleter(HELP_COMMAND),
+                                new NullCompleter())
+                )
         );
-
         completors.stream().forEach((c) -> {
             console.addCompleter(c);
         });

@@ -13,10 +13,15 @@ public final class Ingredient {
 
     private int quantity;
 
-    private final static int MAX_QUANTITY = 100;
+    private final static int MAX_QUANTITY = 30;
 
     public Ingredient() {
 
+    }
+
+    public Ingredient(Ingredient copy) {
+        this.name = copy.getName();
+        this.quantity = copy.getQuantity();
     }
 
     public Ingredient(String name, int quantity) {
@@ -72,11 +77,18 @@ public final class Ingredient {
         return this.quantity == other.quantity;
     }
 
-    void reduceQuantity(int value) {
+    void decreaseQuantity(int value) {
         if (value > quantity) {
             throw new IllegalStateException("Cannot use more: " + this + ".");
         }
-        quantity = quantity - value;
+        logger.debug("Reducing {} quantity for the ingredient {}", value, this);
+        setQuantity(quantity - value);
+        logger.debug("New quantity for the ingredient is: {}", this);
     }
 
+    void increaseQuantity(int value) {
+        logger.debug("Increasing {} quantity for the ingredient {}", value, this);
+        setQuantity(quantity + value);
+        logger.debug("New quantity for the ingredient is: {}", this);
+    }
 }
