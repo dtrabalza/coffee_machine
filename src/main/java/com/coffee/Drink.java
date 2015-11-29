@@ -2,9 +2,9 @@ package com.coffee;
 
 import com.coffee.utils.Validator;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 public final class Drink {
 
@@ -12,10 +12,10 @@ public final class Drink {
 
     private String name;
 
-    private Set<Ingredient> ingredients;
+    private Map<String, Ingredient> ingredientsMap;
 
     public Drink() {
-        ingredients = new HashSet<>();
+        ingredientsMap = new LinkedHashMap<>();
     }
 
     public Drink(String name) {
@@ -33,32 +33,32 @@ public final class Drink {
     }
 
     public Collection<Ingredient> getIngredients() {
-        return ingredients;
+        return ingredientsMap.values();
     }
 
     public Drink addIngredient(Ingredient ingredient) {
-        if (ingredients.contains(ingredient)) {
+        if (ingredientsMap.containsKey(ingredient.getName())) {
             throw new IllegalArgumentException("Cannot add twice the same ingredient");
         }
 
-        if (ingredients.size() >= MAX_NUMBER_OF_INGREDIENTS) {
+        if (ingredientsMap.size() >= MAX_NUMBER_OF_INGREDIENTS) {
             throw new IllegalStateException("Cannot add more than five ingredients");
         }
 
-        ingredients.add(ingredient);
+        ingredientsMap.put(ingredient.getName(), ingredient);
         return this;
     }
 
     @Override
     public String toString() {
-        return "Drink: " + name + " " + ingredients;
+        return "Drink: " + name + " " + ingredientsMap;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 61 * hash + Objects.hashCode(this.name);
-        hash = 61 * hash + Objects.hashCode(this.ingredients);
+        hash = 61 * hash + Objects.hashCode(this.ingredientsMap);
         return hash;
     }
 
@@ -74,7 +74,7 @@ public final class Drink {
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        return Objects.equals(this.ingredients, other.ingredients);
+        return Objects.equals(this.ingredientsMap, other.ingredientsMap);
     }
 
 }
