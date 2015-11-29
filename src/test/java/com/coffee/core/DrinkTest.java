@@ -1,5 +1,7 @@
-package com.coffee;
+package com.coffee.core;
 
+import com.coffee.core.Drink;
+import com.coffee.core.Ingredient;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

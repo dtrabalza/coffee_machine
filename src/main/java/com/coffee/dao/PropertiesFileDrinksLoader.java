@@ -1,5 +1,7 @@
-package com.coffee;
+package com.coffee.dao;
 
+import com.coffee.core.Drink;
+import com.coffee.core.Ingredient;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

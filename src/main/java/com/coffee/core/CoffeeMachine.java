@@ -1,5 +1,6 @@
-package com.coffee;
+package com.coffee.core;
 
+import com.coffee.dao.PropertiesFileDrinksLoader;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -137,7 +138,7 @@ public class CoffeeMachine {
         return new Drink(drinksMap.get(drinkName));
     }
 
-    void prepareDrink(Drink drink) {
+    public void prepareDrink(Drink drink) {
         logger.info("CoffeeMachine preparing: " + drink.getName());
         drink.getIngredients().stream().forEach((ingredient) -> {
             consumeIngredient(ingredient);

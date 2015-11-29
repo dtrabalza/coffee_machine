@@ -1,5 +1,6 @@
-package com.coffee;
+package com.coffee.core;
 
+import com.coffee.input.InputHandler;
 import com.coffee.utils.Validator;
 import java.util.Collection;
 import java.util.Iterator;
@@ -98,11 +99,11 @@ public final class Drink {
         return ingredientsMap.get(ingredientName);
     }
 
-    void increaseStrength(int value) {
+    public void increaseStrength(int value) {
         ingredientsMap.entrySet().iterator().next().getValue().increaseQuantity(value);
     }
 
-    void decreaseStrength(int value) {
+    public void decreaseStrength(int value) {
         ingredientsMap.entrySet().iterator().next().getValue().decreaseQuantity(value);
     }
 
@@ -121,11 +122,11 @@ public final class Drink {
         return clonedMap;
     }
 
-    boolean canAddMilk() {
+    public boolean canAddMilk() {
         return !ingredientsMap.containsKey("Milk");
     }
 
-    void addMilk() {
+    public void addMilk() {
         addIngredient(new Ingredient("Milk", 1));
     }
 

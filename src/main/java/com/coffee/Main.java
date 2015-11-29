@@ -1,8 +1,8 @@
 package com.coffee;
 
-import java.io.File;
+import com.coffee.input.InputHandler;
+import com.coffee.core.CoffeeMachine;
 import java.io.IOException;
-import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

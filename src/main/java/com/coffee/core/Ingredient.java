@@ -1,4 +1,4 @@
-package com.coffee;
+package com.coffee.core;
 
 import com.coffee.utils.Validator;
 import java.util.Objects;

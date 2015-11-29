@@ -1,5 +1,8 @@
-package com.coffee;
+package com.coffee.input;
 
+import com.coffee.core.Ingredient;
+import com.coffee.core.Drink;
+import com.coffee.core.CoffeeMachine;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;

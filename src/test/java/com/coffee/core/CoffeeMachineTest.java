@@ -1,5 +1,8 @@
-package com.coffee;
+package com.coffee.core;
 
+import com.coffee.core.Drink;
+import com.coffee.core.CoffeeMachine;
+import com.coffee.core.Ingredient;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.*;

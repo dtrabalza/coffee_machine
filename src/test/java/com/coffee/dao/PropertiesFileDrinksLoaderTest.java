@@ -1,5 +1,8 @@
-package com.coffee;
+package com.coffee.dao;
 
+import com.coffee.core.Drink;
+import com.coffee.core.Ingredient;
+import com.coffee.dao.PropertiesFileDrinksLoader;
 import java.io.IOException;
 import java.util.List;
 import org.junit.Test;
@@ -9,7 +12,7 @@ public class PropertiesFileDrinksLoaderTest {
 
     @Test
     public void propertyFilesLoadedSuccessfully() throws IOException {
-        new PropertiesFileDrinksLoader("../../drinks.properties");
+        new PropertiesFileDrinksLoader("../../../drinks.properties");
     }
 
     @Test(expected = IOException.class)
@@ -19,7 +22,7 @@ public class PropertiesFileDrinksLoaderTest {
 
     @Test
     public void loadDrinksWorks() throws IOException {
-        PropertiesFileDrinksLoader loader = new PropertiesFileDrinksLoader("../../drinks.properties");
+        PropertiesFileDrinksLoader loader = new PropertiesFileDrinksLoader("../../../drinks.properties");
 
         List<Drink> drinks = loader.loadDrinks();
 
