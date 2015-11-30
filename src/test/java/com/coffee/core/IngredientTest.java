@@ -85,8 +85,8 @@ public class IngredientTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void totalQuantityCannotBeMoreThan30() {
-        Ingredient water = new Ingredient("Water", 10);
+    public void totalQuantityCannotBeMoreThan50() {
+        Ingredient water = new Ingredient("Water", 30);
 
         water.increaseQuantity(22);
     }

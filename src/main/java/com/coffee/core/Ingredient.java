@@ -13,7 +13,7 @@ public final class Ingredient {
 
     private int quantity;
 
-    private final static int MAX_QUANTITY = 30;
+    private final static int MAX_QUANTITY = 50;
 
     public Ingredient() {
 

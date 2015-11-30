@@ -65,7 +65,7 @@ public final class Drink {
 
     @Override
     public String toString() {
-        return "Drink: " + name + " " + ingredientsMap;
+        return name + " " + ingredientsMap.values();
     }
 
     @Override

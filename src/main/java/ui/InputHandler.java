@@ -38,7 +38,7 @@ public class InputHandler {
         LIST(LIST_COMMAND, "Lists the available drinks"),
         HELP(HELP_COMMAND, "Prints the help page"),
         PREPARE(PREPARE_COMMAND, "\"prepare drink_name [drink_modifiers]\" - prepares the selected drink"),
-        SAVE(SAVE_COMMAND, "\"save drink_name [drink_modifiers] favorite_name\" - saves a favourite drink");
+        SAVE(SAVE_COMMAND, "\"save drink_name [drink_modifiers] favorite_name\" - saves a favourite drink (no spaces allowed in the favorite name)");
 
         private final String name;
         private final String description;
@@ -201,18 +201,29 @@ public class InputHandler {
         console.println();
         printCoffeeMachineIngredients();
         console.println("*************** HELP PAGE ***************");
-        console.println("CTRL+D" + "   " + "Quit");
+        console.println("CTRL+D" + "     " + "Quit");
         for (Command command : Command.values()) {
             console.println(command.getName() + "     " + command.getDescription());
         }
         console.println();
         console.println("Drink modifiers (each separated by a space) [strength] [milk] [sugar] ");
-        console.println("+" + "   " + "Increases Drink's strength");
-        console.println("-" + "   " + "Decreases Drink's strength");
-        console.println("m" + "   " + "Adds milk (only supported by some drinks)");
+        console.println("+" + "   " + "Increases Drink's strength (you can increase only once)");
+        console.println("-" + "   " + "Decreases Drink's strength (you can decrease only once)");
+        console.println("m" + "   " + "Adds milk (only supported by drinks which don't contain milk already)");
         console.println("s" + "   " + "Adds one lump of sugar (add more \"s\" separated by spaces for additional lumps)");
         console.println();
-        console.println("HINT: Use TAB for autocomplete");
+        console.println("HINT: Use TAB for autocomplete. After a command, press space and then use TAB for autocomplete.");
+        console.println();
+        console.println("NOTE: everythink is Case Sensitive!");
+        console.println();
+        console.println("Examples:");
+        console.println();
+        console.println("Prepare a strong Espresso with 2 lumps of sugar and milk");
+        console.println(" \"prepare Espresso + s s m\"");
+        console.println();
+        console.println("Save an Espresso with 1 lump of sugar and milk called \"Macchiato\"");
+        console.println(" \"save Espresso s m Macchiato\"");
+        console.println();
         console.println("*************** HELP PAGE ***************");
         console.println();
     }

@@ -78,11 +78,11 @@ public class CoffeeMachine {
 
     protected void loadIngredientsFromMemory() {
         logger.info("Loading ingredients...");
-        addIngredient(new Ingredient("Water", 20));
-        addIngredient(new Ingredient("Coffee", 20));
-        addIngredient(new Ingredient("Milk", 20));
-        addIngredient(new Ingredient("Chocolate", 10));
-        addIngredient(new Ingredient("Sugar", 10));
+        addIngredient(new Ingredient("Water", 40));
+        addIngredient(new Ingredient("Coffee", 40));
+        addIngredient(new Ingredient("Milk", 40));
+        addIngredient(new Ingredient("Chocolate", 20));
+        addIngredient(new Ingredient("Sugar", 20));
         logger.info("Ingredients loaded");
     }
 
