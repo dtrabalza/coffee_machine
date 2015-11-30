@@ -1,6 +1,6 @@
 package com.coffee.core;
 
-import com.coffee.input.InputHandler;
+import ui.InputHandler;
 import com.coffee.utils.Validator;
 import java.util.Collection;
 import java.util.Iterator;

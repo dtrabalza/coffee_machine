@@ -1,4 +1,4 @@
-package com.coffee.input;
+package ui;
 
 import com.coffee.core.Ingredient;
 import com.coffee.core.Drink;
@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import jline.TerminalFactory;
 import jline.console.ConsoleReader;
@@ -23,6 +24,8 @@ public class InputHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(InputHandler.class);
 
+    private static String ERROR_MESSAGE;
+
     private CoffeeMachine coffeeMachine;
 
     public final static String LIST_COMMAND = "list";
@@ -34,8 +37,8 @@ public class InputHandler {
 
         LIST(LIST_COMMAND, "Lists the available drinks"),
         HELP(HELP_COMMAND, "Prints the help page"),
-        PREPARE(PREPARE_COMMAND, "prepare drink_name [drink_modifiers] prepares the selected drink"),
-        SAVE(SAVE_COMMAND, "save drink_name [drink_modifiers] favorite_name save a favourite drink");
+        PREPARE(PREPARE_COMMAND, "\"prepare drink_name [drink_modifiers]\" - prepares the selected drink"),
+        SAVE(SAVE_COMMAND, "\"save drink_name [drink_modifiers] favorite_name\" - saves a favourite drink");
 
         private final String name;
         private final String description;
@@ -57,6 +60,7 @@ public class InputHandler {
     private final ConsoleReader console;
 
     public InputHandler() {
+        ERROR_MESSAGE = "Command incorrect. Type \"" + HELP_COMMAND + "\" to see the help page";
         try {
             TerminalFactory.configure(TerminalFactory.Type.UNIX);
             console = new ConsoleReader();
@@ -88,38 +92,42 @@ public class InputHandler {
                 handleSaveCommand(line);
             } else {
                 logger.debug("User enter and unrecognised command");
-                printHelp();
+                print(ERROR_MESSAGE);
             }
         }
 
     }
 
     private void handlePrepareCommand(String line) throws IOException {
-        Scanner scanner = new Scanner(line);
-        scanner.next();
-        String drinkName = scanner.next();
-        if (coffeeMachine.getDrinksNameList().contains(drinkName)) {
-            Drink drink = coffeeMachine.getDrinkByName(drinkName);
-            try {
+        try {
+            Scanner scanner = new Scanner(line);
+            scanner.next();
+            String drinkName = scanner.next();
+            if (coffeeMachine.getDrinksNameList().contains(drinkName)) {
+                Drink drink = coffeeMachine.getDrinkByName(drinkName);
+                try {
 
-                parseDrink(line, drink);
+                    parseDrink(line, drink);
 
-                logger.info("Preparing drink: {}", drink);
-                coffeeMachine.prepareDrink(drink);
-                print("Your drink is ready! Enjoy your " + drink);
-                logger.info("Successfully prepared {}", drink);
-                printCoffeeMachineIngredients();
-            } catch (IllegalStateException e) {
-                String message = "Cannot prepare your drink because: " + e.getMessage() + " "
-                        + "Please ask the coffee machine guy or whichever italian you can find :)";
-                print(message);
-                logger.warn(message);
-            } catch (IllegalArgumentException e) {
-                print("Cannot prepare your drink because: " + e.getMessage());
-                logger.warn("Cannot prepare drink {} because: {}", drink, e.getMessage());
+                    logger.info("Preparing drink: {}", drink);
+                    coffeeMachine.prepareDrink(drink);
+                    print("Your drink is ready! Enjoy your " + drink);
+                    logger.info("Successfully prepared {}", drink);
+                    printCoffeeMachineIngredients();
+                } catch (IllegalStateException e) {
+                    String message = "Cannot prepare your drink because: " + e.getMessage() + " "
+                            + "Please ask the coffee machine guy or whichever italian you can find :)";
+                    print(message);
+                    logger.warn(message);
+                } catch (IllegalArgumentException e) {
+                    print("Cannot prepare your drink because: " + e.getMessage());
+                    logger.warn("Cannot prepare drink {} because: {}", drink, e.getMessage());
+                }
+            } else {
+                print("Sorry, drink not present. Try listing the drinks using the command \"" + LIST_COMMAND + "\"");
             }
-        } else {
-            print("Sorry, drink not present. Try listing the drinks using the command \"" + LIST_COMMAND + "\"");
+        } catch (NoSuchElementException e) {
+            print(ERROR_MESSAGE);
         }
     }
 
@@ -148,36 +156,40 @@ public class InputHandler {
     }
 
     private void handleSaveCommand(String line) {
-        Scanner scanner = new Scanner(line);
-        scanner.next();
-        String drinkName = scanner.next();
+        try {
+            Scanner scanner = new Scanner(line);
+            scanner.next();
+            String drinkName = scanner.next();
 
-        String favoriteName = line.substring(line.lastIndexOf(" ") + 1);
+            String favoriteName = line.substring(line.lastIndexOf(" ") + 1);
 
-        String drinkDescription = line.substring(
-                line.lastIndexOf(drinkName),
-                line.lastIndexOf(favoriteName));
-        if (coffeeMachine.getDrinksNameList().contains(drinkName)) {
-            Drink drink = coffeeMachine.getDrinkByName(drinkName);
-            try {
-                parseDrink(drinkDescription, drink);
-                drink.setName(favoriteName);
+            String drinkDescription = line.substring(
+                    line.lastIndexOf(drinkName),
+                    line.lastIndexOf(favoriteName));
+            if (coffeeMachine.getDrinksNameList().contains(drinkName)) {
+                Drink drink = coffeeMachine.getDrinkByName(drinkName);
+                try {
+                    parseDrink(drinkDescription, drink);
+                    drink.setName(favoriteName);
 
-                print("Saving drink: " + drink);
+                    print("Saving drink: " + drink);
 
-                coffeeMachine.addDrink(drink);
+                    coffeeMachine.addDrink(drink);
 
-                configureAutocomplete();
-            } catch (IllegalStateException e) {
-                String message = "Cannot save your drink because: " + e.getMessage();
-                print(message);
-                logger.warn(message);
-            } catch (IllegalArgumentException e) {
-                print("Cannot save your drink because: " + e.getMessage());
-                logger.warn("Cannot save drink {} because: {}", drink, e.getMessage());
+                    configureAutocomplete();
+                } catch (IllegalStateException e) {
+                    String message = "Cannot save your drink because: " + e.getMessage();
+                    print(message);
+                    logger.warn(message);
+                } catch (IllegalArgumentException e) {
+                    print("Cannot save your drink because: " + e.getMessage());
+                    logger.warn("Cannot save drink {} because: {}", drink, e.getMessage());
+                }
+            } else {
+                print("Sorry, drink not present. Try listing the drinks using the command \"" + LIST_COMMAND + "\"");
             }
-        } else {
-            print("Sorry, drink not present. Try listing the drinks using the command \"" + LIST_COMMAND + "\"");
+        } catch (NoSuchElementException e) {
+            print(ERROR_MESSAGE);
         }
     }
 
@@ -194,11 +206,11 @@ public class InputHandler {
             console.println(command.getName() + "     " + command.getDescription());
         }
         console.println();
-        console.println("Drink modifiers (space separated) [strength] [milk] [sugar] ");
+        console.println("Drink modifiers (each separated by a space) [strength] [milk] [sugar] ");
         console.println("+" + "   " + "Increases Drink's strength");
         console.println("-" + "   " + "Decreases Drink's strength");
         console.println("m" + "   " + "Adds milk (only supported by some drinks)");
-        console.println("s" + "   " + "Adds one lump of sugar (add more \"s\" for additional lumps)");
+        console.println("s" + "   " + "Adds one lump of sugar (add more \"s\" separated by spaces for additional lumps)");
         console.println();
         console.println("HINT: Use TAB for autocomplete");
         console.println("*************** HELP PAGE ***************");
@@ -239,15 +251,9 @@ public class InputHandler {
     }
 
     private void configureAutocomplete() {
-        
-        List<Completer> completorsToRemove = new LinkedList<>();
-        console.getCompleters().stream().forEach((completer) -> {
-            completorsToRemove.add(completer);
-        });
-        completorsToRemove.stream().forEach((toRemove) -> {
-            console.removeCompleter(toRemove);
-        });
-    
+
+        removeExistingCompleter();
+
         List<Completer> completors = new LinkedList<>();
         completors.add(
                 new AggregateCompleter(
@@ -345,6 +351,16 @@ public class InputHandler {
         );
         completors.stream().forEach((c) -> {
             console.addCompleter(c);
+        });
+    }
+
+    private void removeExistingCompleter() {
+        List<Completer> completorsToRemove = new LinkedList<>();
+        console.getCompleters().stream().forEach((completer) -> {
+            completorsToRemove.add(completer);
+        });
+        completorsToRemove.stream().forEach((toRemove) -> {
+            console.removeCompleter(toRemove);
         });
     }
 

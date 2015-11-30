@@ -1,6 +1,6 @@
 package com.coffee;
 
-import com.coffee.input.InputHandler;
+import ui.InputHandler;
 import com.coffee.core.CoffeeMachine;
 import java.io.IOException;
 import org.slf4j.Logger;
