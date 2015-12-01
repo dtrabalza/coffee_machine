@@ -1,5 +1,4 @@
-# coffee_machine
-Coffee Machine
+#Coffee Machine
 
 This is a coffee machine able to:
 
